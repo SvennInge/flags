@@ -1,0 +1,18 @@
+[
+  {
+    "id": "norway",
+    "name": "Norway",
+    "image": "flags/norway.svg",
+    "colors": ["red", "white", "blue"],
+    "layout": ["nordic-cross"],
+    "symbols": ["cross"]
+  },
+  {
+    "id": "iceland",
+    "name": "Iceland",
+    "image": "flags/iceland.svg",
+    "colors": ["blue", "white", "red"],
+    "layout": ["nordic-cross"],
+    "symbols": ["cross"]
+  }
+]
