@@ -7,6 +7,14 @@ canvas.height = 850;
 let flags = [];
 let selectedFlag = null;
 let loadedImageCount = 0;
+let hoveredFlag = null;
+let mouse = { x: 0, y: 0 };
+
+const relationFilters = {
+  colors: false,
+  layout: false,
+  symbols: false,
+};
 
 const NODE_RADIUS = 22;
 const SELECTED_RADIUS = 28;
@@ -41,14 +49,52 @@ function sharedCount(a, b, key) {
   return a[key].filter(item => b[key].includes(item)).length;
 }
 
+function colorsFullyMatch(a, b) {
+  if (!a.colors || !b.colors) return false;
+  if (a.colors.length === 0 || b.colors.length === 0) return false;
+  if (a.colors.length !== b.colors.length) return false;
+
+  return a.colors.every(color => b.colors.includes(color));
+}
+
+function relationMatches(a, b) {
+  return {
+    colors: colorsFullyMatch(a, b),
+    layout: sharedCount(a, b, "layout") > 0,
+    symbols: sharedCount(a, b, "symbols") > 0,
+  };
+}
+
+function activeFilterKeys() {
+  return Object.keys(relationFilters).filter(key => relationFilters[key]);
+}
+
+function passesRelationFilters(a, b) {
+  if (!a || !b) return false;
+
+  const active = activeFilterKeys();
+  const matches = relationMatches(a, b);
+
+  // Default mode: show any relation.
+  if (active.length === 0) {
+    return matches.colors || matches.layout || matches.symbols;
+  }
+
+  // Filter mode: every selected filter must match.
+  return active.every(key => matches[key]);
+}
+
 function similarity(a, b) {
   if (!a || !b) return 0;
 
-  const colorMatch = sharedCount(a, b, "colors");
-  const layoutMatch = sharedCount(a, b, "layout");
-  const symbolMatch = sharedCount(a, b, "symbols");
+  const matches = relationMatches(a, b);
+  let score = 0;
 
-  return colorMatch * 2 + layoutMatch * 3 + symbolMatch * 2;
+  if (matches.colors) score += 6;
+  if (matches.layout) score += sharedCount(a, b, "layout") * 3;
+  if (matches.symbols) score += sharedCount(a, b, "symbols") * 2;
+
+  return score;
 }
 
 function arrangeBySimilarity() {
@@ -69,7 +115,7 @@ function arrangeBySimilarity() {
       for (let j = i + 1; j < flags.length; j++) {
         const a = flags[i];
         const b = flags[j];
-        const score = similarity(a, b);
+        const score = passesRelationFilters(a, b) ? similarity(a, b) : 0;
 
         let dx = b.x - a.x;
         let dy = b.y - a.y;
@@ -162,6 +208,97 @@ function draw() {
   drawLines();
   drawNodes();
   drawLabels();
+  drawMenu();
+  drawHover();
+}
+
+function drawHover() {
+  if (!hoveredFlag) return;
+
+  const padding = 6;
+  ctx.font = "12px Arial";
+  const textWidth = ctx.measureText(hoveredFlag.name).width;
+  const w = textWidth + padding * 2;
+  const h = 20;
+
+  let x = mouse.x + 12;
+  let y = mouse.y + 12;
+
+  // keep inside canvas
+  if (x + w > canvas.width) x = mouse.x - w - 12;
+  if (y + h > canvas.height) y = mouse.y - h - 12;
+
+  ctx.fillStyle = "rgba(15,23,42,0.9)";
+  roundRect(x, y, w, h, 6);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148,163,184,0.4)";
+  ctx.stroke();
+
+  ctx.fillStyle = "white";
+  ctx.textBaseline = "middle";
+  ctx.fillText(hoveredFlag.name, x + padding, y + h / 2);
+}
+
+function drawMenu() {
+  const x = 14;
+  const y = 14;
+  const w = 190;
+  const h = 112;
+
+  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+  roundRect(x, y, w, h, 10);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+  ctx.lineWidth = 1;
+  roundRect(x, y, w, h, 10);
+  ctx.stroke();
+
+  ctx.fillStyle = "white";
+  ctx.font = "bold 13px Arial";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Relations", x + 12, y + 18);
+
+  drawCheckbox("colors", "Exact same colors", x + 12, y + 42);
+  drawCheckbox("layout", "Common layout", x + 12, y + 68);
+  drawCheckbox("symbols", "Common symbols", x + 12, y + 94);
+}
+
+function drawCheckbox(key, label, x, y) {
+  ctx.strokeStyle = "rgba(226, 232, 240, 0.75)";
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x, y - 8, 14, 14);
+
+  if (relationFilters[key]) {
+    ctx.fillStyle = "#38bdf8";
+    ctx.fillRect(x + 3, y - 5, 8, 8);
+  }
+
+  ctx.fillStyle = "white";
+  ctx.font = "12px Arial";
+  ctx.textBaseline = "middle";
+  ctx.fillText(label, x + 22, y - 1);
+}
+
+function handleMenuClick(x, y) {
+  const items = [
+    { key: "colors", x: 26, y: 48, w: 160, h: 22 },
+    { key: "layout", x: 26, y: 74, w: 160, h: 22 },
+    { key: "symbols", x: 26, y: 100, w: 160, h: 22 },
+  ];
+
+  const hit = items.find(item =>
+    x >= item.x && x <= item.x + item.w &&
+    y >= item.y - 12 && y <= item.y - 12 + item.h
+  );
+
+  if (!hit) return false;
+
+  relationFilters[hit.key] = !relationFilters[hit.key];
+  arrangeBySimilarity();
+  draw();
+  return true;
 }
 
 function drawStatusText() {
@@ -179,8 +316,9 @@ function drawLines() {
       const a = flags[i];
       const b = flags[j];
       const score = similarity(a, b);
+      const visibleByFilters = passesRelationFilters(a, b);
 
-      if (score > 0) {
+      if (score > 0 && visibleByFilters) {
         const connectedToSelected =
           selectedFlag === null ||
           a.id === selectedFlag.id ||
@@ -207,7 +345,7 @@ function drawNodes() {
     const isConnected =
       selectedFlag === null ||
       f.id === selectedFlag.id ||
-      similarity(f, selectedFlag) > 0;
+      passesRelationFilters(f, selectedFlag);
 
     ctx.globalAlpha = isConnected ? 1 : 0.16;
 
@@ -262,7 +400,7 @@ function drawLabels() {
   if (!selectedFlag) return;
 
   const visibleFlags = flags.filter(f =>
-    f.id === selectedFlag.id || similarity(f, selectedFlag) > 0
+    f.id === selectedFlag.id || passesRelationFilters(f, selectedFlag)
   );
 
   const placedLabels = [];
@@ -379,10 +517,27 @@ function roundRect(x, y, w, h, r) {
   ctx.closePath();
 }
 
+canvas.addEventListener("mousemove", event => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = event.clientX - rect.left;
+  mouse.y = event.clientY - rect.top;
+
+  const found = flags.find(f => {
+    const dx = mouse.x - f.x;
+    const dy = mouse.y - f.y;
+    return Math.sqrt(dx * dx + dy * dy) < NODE_RADIUS;
+  });
+
+  hoveredFlag = found || null;
+  draw();
+});
+
 canvas.addEventListener("click", event => {
   const rect = canvas.getBoundingClientRect();
   const mouseX = event.clientX - rect.left;
   const mouseY = event.clientY - rect.top;
+
+  if (handleMenuClick(mouseX, mouseY)) return;
 
   const clicked = flags.find(f => {
     const dx = mouseX - f.x;
