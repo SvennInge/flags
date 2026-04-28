@@ -3,64 +3,130 @@
     "id": "afghanistan",
     "name": "Afghanistan",
     "image": "images/Flag_of_Afghanistan-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "albania",
     "name": "Albania",
     "image": "images/Flag_of_Albania-256x183.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "black"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "eagle"
+    ]
   },
   {
     "id": "algeria",
     "name": "Algeria",
     "image": "images/Flag_of_Algeria-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "vertical-bicolor"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "andorra",
     "name": "Andorra",
     "image": "images/Flag_of_Andorra-256x179.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "angola",
     "name": "Angola",
     "image": "images/Flag_of_Angola-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "black",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "star",
+      "weapon"
+    ]
   },
   {
     "id": "antigua-and-barbuda",
     "name": "Antigua and Barbuda",
     "image": "images/Flag_of_Antigua_and_Barbuda-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "black",
+      "blue",
+      "white",
+      "yellow"
+    ],
+    "layout": [
+      "triangle",
+      "horizontal-bands"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "argentina",
     "name": "Argentina",
     "image": "images/Flag_of_Argentina-256x160.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "armenia",
     "name": "Armenia",
     "image": "images/Flag_of_Armenia-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "blue",
+      "orange"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
@@ -84,32 +150,59 @@
     "id": "austria",
     "name": "Austria",
     "image": "images/Flag_of_Austria-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
     "symbols": []
   },
   {
     "id": "azerbaijan",
     "name": "Azerbaijan",
     "image": "images/Flag_of_Azerbaijan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "bahamas",
     "name": "Bahamas",
     "image": "images/Flag_of_Bahamas-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "yellow",
+      "black"
+    ],
+    "layout": [
+      "horizontal-triband",
+      "hoist-triangle"
+    ],
     "symbols": []
   },
   {
     "id": "bahrain",
     "name": "Bahrain",
     "image": "images/Flag_of_Bahrain-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "vertical-bicolor",
+      "serrated"
+    ],
     "symbols": []
   },
   {
@@ -121,29 +214,44 @@
       "red"
     ],
     "layout": [
-      "solid-field",
-      "centered-emblem"
+      "solid-field"
     ],
     "symbols": [
-      "disc",
-      "sun"
+      "disc"
     ]
   },
   {
     "id": "barbados",
     "name": "Barbados",
     "image": "images/Flag_of_Barbados-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "black"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "trident"
+    ]
   },
   {
     "id": "belarus",
     "name": "Belarus",
     "image": "images/Flag_of_Belarus-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "hoist-pattern"
+    ],
+    "symbols": [
+      "ornament"
+    ]
   },
   {
     "id": "belgium",
@@ -163,225 +271,450 @@
     "id": "belize",
     "name": "Belize",
     "image": "images/Flag_of_Belize-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "benin",
     "name": "Benin",
     "image": "images/Flag_of_Benin-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "bhutan",
     "name": "Bhutan",
     "image": "images/Flag_of_Bhutan-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "orange",
+      "white"
+    ],
+    "layout": [
+      "diagonal-bicolor"
+    ],
+    "symbols": [
+      "dragon"
+    ]
   },
   {
     "id": "bolivia",
     "name": "Bolivia",
     "image": "images/Flag_of_Bolivia-256x174.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "bosnia-and-herzegovina",
     "name": "Bosnia and Herzegovina",
     "image": "images/Flag_of_Bosnia_and_Herzegovina-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "white"
+    ],
+    "layout": [
+      "diagonal",
+      "right-triangle"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "botswana",
     "name": "Botswana",
     "image": "images/Flag_of_Botswana-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
     "symbols": []
   },
   {
     "id": "brazil",
     "name": "Brazil",
     "image": "images/Flag_of_Brazil-256x179.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "disc",
+      "text"
+    ]
   },
   {
     "id": "brunei",
     "name": "Brunei",
     "image": "images/Flag_of_Brunei-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "white",
+      "black",
+      "red"
+    ],
+    "layout": [
+      "diagonal-stripes"
+    ],
+    "symbols": [
+      "crest"
+    ]
   },
   {
     "id": "bulgaria",
     "name": "Bulgaria",
     "image": "images/Flag_of_Bulgaria-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "white",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "burkina-faso",
     "name": "Burkina Faso",
     "image": "images/Flag_of_Burkina_Faso-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "burundi",
     "name": "Burundi",
     "image": "images/Flag_of_Burundi-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "diagonal-cross"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "cambodia",
     "name": "Cambodia",
     "image": "images/Flag_of_Cambodia-256x164.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "building"
+    ]
   },
   {
     "id": "cameroon",
     "name": "Cameroon",
     "image": "images/Flag_of_Cameroon-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "canada",
     "name": "Canada",
     "image": "images/Flag_of_Canada-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "vertical-triband"
+    ],
+    "symbols": [
+      "leaf"
+    ]
   },
   {
     "id": "cape-verde",
     "name": "Cape Verde",
     "image": "images/Flag_of_Cape_Verde-256x151.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "central-african-republic",
     "name": "Central African Republic",
     "image": "images/Flag_of_Central_African_Republic-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "vertical-stripe"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "chad",
     "name": "Chad",
     "image": "images/Flag_of_Chad-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "chile",
     "name": "Chile",
     "image": "images/Flag_of_Chile-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "canton"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "colombia",
     "name": "Colombia",
     "image": "images/Flag_of_Colombia-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "yellow",
+      "blue",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "comoros",
     "name": "Comoros",
     "image": "images/Flag_of_Comoros-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "white",
+      "red",
+      "blue",
+      "green"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "crescent-moon-star",
+      "stars"
+    ]
   },
   {
     "id": "cook-islands",
     "name": "Cook Islands",
     "image": "images/Flag_of_Cook_Islands-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "canton"
+    ],
+    "symbols": [
+      "stars",
+      "union-jack"
+    ]
   },
   {
     "id": "costa-rica",
     "name": "Costa Rica",
     "image": "images/Flag_of_Costa_Rica-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
     "symbols": []
   },
   {
     "id": "co-te-divoire",
     "name": "Côte dIvoire",
     "image": "images/Flag_of_Côte_dIvoire-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "orange",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "croatia",
     "name": "Croatia",
     "image": "images/Flag_of_Croatia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "shield"
+    ]
   },
   {
     "id": "cuba",
     "name": "Cuba",
     "image": "images/Flag_of_Cuba-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "stripes",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "cyprus",
     "name": "Cyprus",
     "image": "images/Flag_of_Cyprus-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "orange",
+      "green"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "map",
+      "branches"
+    ]
   },
   {
     "id": "czech-republic",
     "name": "Czech Republic",
     "image": "images/Flag_of_Czech_Republic-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "white",
+      "red",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "hoist-triangle"
+    ],
     "symbols": []
   },
   {
     "id": "democratic-republic-of-the-congo",
     "name": "Democratic Republic of the Congo",
     "image": "images/Flag_of_Democratic_Republic_of_Congo-256x192.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "denmark",
@@ -402,57 +735,123 @@
     "id": "djibouti",
     "name": "Djibouti",
     "image": "images/Flag_of_Djibouti-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "green",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "dominica",
     "name": "Dominica",
     "image": "images/Flag_of_Dominica-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "black",
+      "white",
+      "red",
+      "purple"
+    ],
+    "layout": [
+      "cross"
+    ],
+    "symbols": [
+      "bird",
+      "stars",
+      "disc"
+    ]
   },
   {
     "id": "dominican-republic",
     "name": "Dominican Republic",
     "image": "images/Flag_of_Dominican_Republic-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "quartered",
+      "centered-cross"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "cross"
+    ]
   },
   {
     "id": "east-timor",
     "name": "East Timor",
     "image": "images/Flag_of_East_Timor-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "ecuador",
     "name": "Ecuador",
     "image": "images/Flag_of_Ecuador-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "blue",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "egypt",
     "name": "Egypt",
     "image": "images/Flag_of_Egypt-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "black",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "eagle"
+    ]
   },
   {
     "id": "el-salvador",
     "name": "El Salvador",
     "image": "images/Flag_of_El_Salvador-256x145.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "england",
@@ -473,57 +872,120 @@
     "id": "equatorial-guinea",
     "name": "Equatorial Guinea",
     "image": "images/Flag_of_Equatorial_Guinea-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "eritrea",
     "name": "Eritrea",
     "image": "images/Flag_of_Eritrea-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "red",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "diagonal-triangles"
+    ],
+    "symbols": [
+      "wreath",
+      "branch"
+    ]
   },
   {
     "id": "estonia",
     "name": "Estonia",
     "image": "images/Flag_of_Estonia-256x163.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "eswatini",
     "name": "Eswatini",
     "image": "images/Flag_of_Eswatini-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "red",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "shield",
+      "spears"
+    ]
   },
   {
     "id": "ethiopia",
     "name": "Ethiopia",
     "image": "images/Flag_of_Ethiopia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "star",
+      "disc"
+    ]
   },
   {
     "id": "micronesia",
     "name": "Micronesia",
     "image": "images/Flag_of_Federated_States_of_Micronesia-256x135.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "fiji",
     "name": "Fiji",
     "image": "images/Flag_of_Fiji-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "canton"
+    ],
+    "symbols": [
+      "union-jack",
+      "shield"
+    ]
   },
   {
     "id": "finland",
@@ -558,25 +1020,46 @@
     "id": "gabon",
     "name": "Gabon",
     "image": "images/Flag_of_Gabon-256x192.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "gambia",
     "name": "Gambia",
     "image": "images/Flag_of_Gambia-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "blue",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
     "symbols": []
   },
   {
     "id": "georgia",
     "name": "Georgia",
     "image": "images/Flag_of_Georgia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red"
+    ],
+    "layout": [
+      "cross",
+      "quartered"
+    ],
+    "symbols": [
+      "cross"
+    ]
   },
   {
     "id": "germany",
@@ -596,88 +1079,178 @@
     "id": "ghana",
     "name": "Ghana",
     "image": "images/Flag_of_Ghana-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow",
+      "green",
+      "black"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "greece",
     "name": "Greece",
     "image": "images/Flag_of_Greece-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "stripes",
+      "canton"
+    ],
+    "symbols": [
+      "cross"
+    ]
   },
   {
     "id": "grenada",
     "name": "Grenada",
     "image": "images/Flag_of_Grenada-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "border",
+      "diagonal-triangles"
+    ],
+    "symbols": [
+      "stars",
+      "nutmeg",
+      "disc"
+    ]
   },
   {
     "id": "guatemala",
     "name": "Guatemala",
     "image": "images/Flag_of_Guatemala-256x160.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "vertical-triband"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "bird"
+    ]
   },
   {
     "id": "guinea",
     "name": "Guinea",
     "image": "images/Flag_of_Guinea-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "guinea-bissau",
     "name": "Guinea-Bissau",
     "image": "images/Flag_of_Guinea-Bissau-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow",
+      "green",
+      "black"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "guyana",
     "name": "Guyana",
     "image": "images/Flag_of_Guyana-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "white",
+      "yellow",
+      "black",
+      "red"
+    ],
+    "layout": [
+      "nested-triangles",
+      "hoist-triangle"
+    ],
     "symbols": []
   },
   {
     "id": "haiti",
     "name": "Haiti",
     "image": "images/Flag_of_Haiti-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "honduras",
     "name": "Honduras",
     "image": "images/Flag_of_Honduras-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "hong-kong",
     "name": "Hong Kong",
     "image": "images/Flag_of_Hong_Kong-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "flower",
+      "stars"
+    ]
   },
   {
     "id": "hungary",
     "name": "Hungary",
     "image": "images/Flag_of_Hungary-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
@@ -700,33 +1273,66 @@
     "id": "india",
     "name": "India",
     "image": "images/Flag_of_India-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "orange",
+      "white",
+      "green",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "wheel"
+    ]
   },
   {
     "id": "indonesia",
     "name": "Indonesia",
     "image": "images/Flag_of_Indonesia-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "iran",
     "name": "Iran",
     "image": "images/Flag_of_Iran-256x146.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "emblem",
+      "script"
+    ]
   },
   {
     "id": "iraq",
     "name": "Iraq",
     "image": "images/Flag_of_Iraq-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "black",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "centered-text"
+    ],
+    "symbols": [
+      "script"
+    ]
   },
   {
     "id": "ireland",
@@ -746,9 +1352,16 @@
     "id": "israel",
     "name": "Israel",
     "image": "images/Flag_of_Israel-256x186.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "star-of-david"
+    ]
   },
   {
     "id": "italy",
@@ -768,9 +1381,17 @@
     "id": "jamaica",
     "name": "Jamaica",
     "image": "images/Flag_of_Jamaica-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "black"
+    ],
+    "layout": [
+      "diagonal-cross"
+    ],
+    "symbols": [
+      "saltire"
+    ]
   },
   {
     "id": "japan",
@@ -781,8 +1402,7 @@
       "red"
     ],
     "layout": [
-      "solid-field",
-      "centered-emblem"
+      "solid-field"
     ],
     "symbols": [
       "disc",
@@ -793,289 +1413,587 @@
     "id": "jordan",
     "name": "Jordan",
     "image": "images/Flag_of_Jordan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "white",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "kazakhstan",
     "name": "Kazakhstan",
     "image": "images/Flag_of_Kazakhstan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field",
+      "hoist-pattern"
+    ],
+    "symbols": [
+      "sun",
+      "eagle",
+      "ornament"
+    ]
   },
   {
     "id": "kenya",
     "name": "Kenya",
     "image": "images/Flag_of_Kenya-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "shield",
+      "spears"
+    ]
   },
   {
     "id": "kiribati",
     "name": "Kiribati",
     "image": "images/Flag_of_Kiribati-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-waves"
+    ],
+    "symbols": [
+      "sun",
+      "bird"
+    ]
   },
   {
     "id": "kosovo",
     "name": "Kosovo",
     "image": "images/Flag_of_Kosovo-256x183.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "map",
+      "stars"
+    ]
   },
   {
     "id": "kuwait",
     "name": "Kuwait",
     "image": "images/Flag_of_Kuwait-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "white",
+      "red",
+      "black"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-trapezoid"
+    ],
     "symbols": []
   },
   {
     "id": "kyrgyzstan",
     "name": "Kyrgyzstan",
     "image": "images/Flag_of_Kyrgyzstan-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "laos",
     "name": "Laos",
     "image": "images/Flag_of_Laos-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "disc"
+    ]
   },
   {
     "id": "latvia",
     "name": "Latvia",
     "image": "images/Flag_of_Latvia-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
     "symbols": []
   },
   {
     "id": "lebanon",
     "name": "Lebanon",
     "image": "images/Flag_of_Lebanon-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "tree"
+    ]
   },
   {
     "id": "lesotho",
     "name": "Lesotho",
     "image": "images/Flag_of_Lesotho-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "green",
+      "black"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "hat"
+    ]
   },
   {
     "id": "liberia",
     "name": "Liberia",
     "image": "images/Flag_of_Liberia-256x135.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "stripes",
+      "canton"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "libya",
     "name": "Libya",
     "image": "images/Flag_of_Libya-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "black",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "liechtenstein",
     "name": "Liechtenstein",
     "image": "images/Flag_of_Liechtenstein-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "crown"
+    ]
   },
   {
     "id": "lithuania",
     "name": "Lithuania",
     "image": "images/Flag_of_Lithuania-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "yellow",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "luxembourg",
     "name": "Luxembourg",
     "image": "images/Flag_of_Luxembourg-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "madagascar",
     "name": "Madagascar",
     "image": "images/Flag_of_Madagascar-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "white",
+      "red",
+      "green"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "malawi",
     "name": "Malawi",
     "image": "images/Flag_of_Malawi-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "red",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "malaysia",
     "name": "Malaysia",
     "image": "images/Flag_of_Malaysia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "stripes",
+      "canton"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "maldives",
     "name": "Maldives",
     "image": "images/Flag_of_Maldives-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "border"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "mali",
     "name": "Mali",
     "image": "images/Flag_of_Mali-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "malta",
     "name": "Malta",
     "image": "images/Flag_of_Malta-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red"
+    ],
+    "layout": [
+      "vertical-bicolor",
+      "canton"
+    ],
+    "symbols": [
+      "cross"
+    ]
   },
   {
     "id": "marshall-islands",
     "name": "Marshall Islands",
     "image": "images/Flag_of_Marshall_Islands-256x135.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "orange"
+    ],
+    "layout": [
+      "diagonal-stripes"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "mauritania",
     "name": "Mauritania",
     "image": "images/Flag_of_Mauritania-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "mauritius",
     "name": "Mauritius",
     "image": "images/Flag_of_Mauritius-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "blue",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
     "symbols": []
   },
   {
     "id": "mexico",
     "name": "Mexico",
     "image": "images/Flag_of_Mexico-256x146.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "eagle"
+    ]
   },
   {
     "id": "moldova",
     "name": "Moldova",
     "image": "images/Flag_of_Moldova-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "eagle"
+    ]
   },
   {
     "id": "monaco",
     "name": "Monaco",
     "image": "images/Flag_of_Monaco-256x205.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "mongolia",
     "name": "Mongolia",
     "image": "images/Flag_of_Mongolia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "vertical-triband"
+    ],
+    "symbols": [
+      "soyombo"
+    ]
   },
   {
     "id": "montenegro",
     "name": "Montenegro",
     "image": "images/Flag_of_Montenegro-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "border"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "eagle"
+    ]
   },
   {
     "id": "morocco",
     "name": "Morocco",
     "image": "images/Flag_of_Morocco-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "mozambique",
     "name": "Mozambique",
     "image": "images/Flag_of_Mozambique-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "black",
+      "yellow",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star",
+      "book",
+      "weapon"
+    ]
   },
   {
     "id": "myanmar",
     "name": "Myanmar",
     "image": "images/Flag_of_Myanmar-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "green",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "namibia",
     "name": "Namibia",
     "image": "images/Flag_of_Namibia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "green",
+      "white",
+      "yellow"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "nauru",
     "name": "Nauru",
     "image": "images/Flag_of_Nauru-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripe"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "nepal",
     "name": "Nepal",
     "image": "images/Flag_of_Nepal-256x312.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "non-rectangular",
+      "double-pennant"
+    ],
+    "symbols": [
+      "sun",
+      "moon"
+    ]
   },
   {
     "id": "netherlands",
@@ -1112,49 +2030,97 @@
     "id": "nicaragua",
     "name": "Nicaragua",
     "image": "images/Flag_of_Nicaragua-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "horizontal-triband"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "triangle"
+    ]
   },
   {
     "id": "niger",
     "name": "Niger",
     "image": "images/Flag_of_Niger-256x219.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "orange",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "disc",
+      "sun"
+    ]
   },
   {
     "id": "nigeria",
     "name": "Nigeria",
     "image": "images/Flag_of_Nigeria-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "white"
+    ],
+    "layout": [
+      "vertical-triband"
+    ],
     "symbols": []
   },
   {
     "id": "niue",
     "name": "Niue",
     "image": "images/Flag_of_Niue-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "blue",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "canton"
+    ],
+    "symbols": [
+      "stars",
+      "union-jack"
+    ]
   },
   {
     "id": "north-korea",
     "name": "North Korea",
     "image": "images/Flag_of_North_Korea-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "star",
+      "disc"
+    ]
   },
   {
     "id": "north-macedonia",
     "name": "North Macedonia",
     "image": "images/Flag_of_North_Macedonia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "sun-rays"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "norway",
@@ -1176,128 +2142,256 @@
     "id": "oman",
     "name": "Oman",
     "image": "images/Flag_of_Oman-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red",
+      "green"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "emblem",
+      "weapon"
+    ]
   },
   {
     "id": "pakistan",
     "name": "Pakistan",
     "image": "images/Flag_of_Pakistan-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "solid-field"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "palau",
     "name": "Palau",
     "image": "images/Flag_of_Palau-256x160.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "disc",
+      "moon"
+    ]
   },
   {
     "id": "palestine",
     "name": "Palestine",
     "image": "images/Flag_of_Palestine-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "black",
+      "white",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-triangle"
+    ],
     "symbols": []
   },
   {
     "id": "panama",
     "name": "Panama",
     "image": "images/Flag_of_Panama-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red",
+      "blue"
+    ],
+    "layout": [
+      "quartered"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "papua-new-guinea",
     "name": "Papua New Guinea",
     "image": "images/Flag_of_Papua_New_Guinea-256x192.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "black",
+      "yellow",
+      "white"
+    ],
+    "layout": [
+      "diagonal-bicolor"
+    ],
+    "symbols": [
+      "stars",
+      "bird"
+    ]
   },
   {
     "id": "paraguay",
     "name": "Paraguay",
     "image": "images/Flag_of_Paraguay-256x141.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "china",
     "name": "China",
     "image": "images/Flag_of_Peoples_Republic_of_China-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field",
+      "canton"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "peru",
     "name": "Peru",
     "image": "images/Flag_of_Peru-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "vertical-triband"
+    ],
     "symbols": []
   },
   {
     "id": "philippines",
     "name": "Philippines",
     "image": "images/Flag_of_Philippines-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "red",
+      "white",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "sun",
+      "stars"
+    ]
   },
   {
     "id": "poland",
     "name": "Poland",
     "image": "images/Flag_of_Poland-256x160.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "portugal",
     "name": "Portugal",
     "image": "images/Flag_of_Portugal-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "red",
+      "yellow",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "vertical-bicolor"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "shield"
+    ]
   },
   {
     "id": "qatar",
     "name": "Qatar",
     "image": "images/Flag_of_Qatar-256x100.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "maroon",
+      "white"
+    ],
+    "layout": [
+      "vertical-bicolor",
+      "serrated"
+    ],
     "symbols": []
   },
   {
     "id": "republic-of-abkhazia",
     "name": "Republic of Abkhazia",
     "image": "images/Flag_of_Republic_of_Abkhazia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "canton"
+    ],
+    "symbols": [
+      "hand",
+      "stars"
+    ]
   },
   {
     "id": "republic-of-the-congo",
     "name": "Republic of the Congo",
     "image": "images/Flag_of_Republic_of_Congo-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "diagonal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "romania",
     "name": "Romania",
     "image": "images/Flag_of_Romania-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
     "symbols": []
   },
   {
@@ -1318,73 +2412,155 @@
     "id": "rwanda",
     "name": "Rwanda",
     "image": "images/Flag_of_Rwanda-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "sahrawi-arab-democratic-republic",
     "name": "Sahrawi Arab Democratic Republic",
     "image": "images/Flag_of_Sahrawi_Arab_Democratic_Republic-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "white",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "saint-kitts-and-nevis",
     "name": "Saint Kitts and Nevis",
     "image": "images/Flag_of_Saint_Kitts_and_Nevis-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "black",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "saint-lucia",
     "name": "Saint Lucia",
     "image": "images/Flag_of_Saint_Lucia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "triangle"
+    ]
   },
   {
     "id": "saint-vincent-and-the-grenadines",
     "name": "Saint Vincent and the Grenadines",
     "image": "images/Flag_of_Saint_Vincent_and_the_Grenadines-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "green"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "diamonds"
+    ]
   },
   {
     "id": "samoa",
     "name": "Samoa",
     "image": "images/Flag_of_Samoa-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "canton"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "san-marino",
     "name": "San Marino",
     "image": "images/Flag_of_San_Marino-256x192.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "blue",
+      "yellow",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "sao-tome-and-principe",
     "name": "Sao Tome and Principe",
     "image": "images/Flag_of_Sao_Tome_and_Principe-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red",
+      "black"
+    ],
+    "layout": [
+      "horizontal-triband",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "saudi-arabia",
     "name": "Saudi Arabia",
     "image": "images/Flag_of_Saudi_Arabia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white"
+    ],
+    "layout": [
+      "solid-field",
+      "centered-text"
+    ],
+    "symbols": [
+      "script",
+      "sword"
+    ]
   },
   {
     "id": "scotland",
@@ -1405,145 +2581,309 @@
     "id": "senegal",
     "name": "Senegal",
     "image": "images/Flag_of_Senegal-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "layout": [
+      "vertical-tricolor"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "serbia",
     "name": "Serbia",
     "image": "images/Flag_of_Serbia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "white",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "emblem-left"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "eagle"
+    ]
   },
   {
     "id": "seychelles",
     "name": "Seychelles",
     "image": "images/Flag_of_Seychelles-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "yellow",
+      "red",
+      "white",
+      "green"
+    ],
+    "layout": [
+      "radiating-bands"
+    ],
     "symbols": []
   },
   {
     "id": "sierra-leone",
     "name": "Sierra Leone",
     "image": "images/Flag_of_Sierra_Leone-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "singapore",
     "name": "Singapore",
     "image": "images/Flag_of_Singapore-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-bicolor",
+      "canton"
+    ],
+    "symbols": [
+      "crescent-moon-star",
+      "stars"
+    ]
   },
   {
     "id": "slovakia",
     "name": "Slovakia",
     "image": "images/Flag_of_Slovakia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "blue",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "emblem-left"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "cross"
+    ]
   },
   {
     "id": "slovenia",
     "name": "Slovenia",
     "image": "images/Flag_of_Slovenia-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "blue",
+      "red"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "emblem-left"
+    ],
+    "symbols": [
+      "coat-of-arms",
+      "stars"
+    ]
   },
   {
     "id": "solomon-islands",
     "name": "Solomon Islands",
     "image": "images/Flag_of_Solomon_Islands-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "yellow",
+      "green",
+      "white"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "somalia",
     "name": "Somalia",
     "image": "images/Flag_of_Somalia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "somaliland",
     "name": "Somaliland",
     "image": "images/Flag_of_Somaliland-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red",
+      "black"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "centered-text"
+    ],
+    "symbols": [
+      "star",
+      "script"
+    ]
   },
   {
     "id": "south-africa",
     "name": "South Africa",
     "image": "images/Flag_of_South_Africa-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "black",
+      "white",
+      "red",
+      "blue"
+    ],
+    "layout": [
+      "y-shape",
+      "horizontal-bands"
+    ],
     "symbols": []
   },
   {
     "id": "south-korea",
     "name": "South Korea",
     "image": "images/Flag_of_South_Korea-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red",
+      "blue",
+      "black"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "taeguk",
+      "trigrams"
+    ]
   },
   {
     "id": "south-ossetia",
     "name": "South Ossetia",
     "image": "images/Flag_of_South_Ossetia-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "white",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "south-sudan",
     "name": "South Sudan",
     "image": "images/Flag_of_South_Sudan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "red",
+      "green",
+      "white",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "spain",
     "name": "Spain",
     "image": "images/Flag_of_Spain-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-triband",
+      "emblem-left"
+    ],
+    "symbols": [
+      "coat-of-arms"
+    ]
   },
   {
     "id": "sri-lanka",
     "name": "Sri Lanka",
     "image": "images/Flag_of_Sri_Lanka-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow",
+      "green",
+      "orange"
+    ],
+    "layout": [
+      "border",
+      "vertical-stripes"
+    ],
+    "symbols": [
+      "lion",
+      "sword",
+      "leaves"
+    ]
   },
   {
     "id": "sudan",
     "name": "Sudan",
     "image": "images/Flag_of_Sudan-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white",
+      "black",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor",
+      "hoist-triangle"
+    ],
     "symbols": []
   },
   {
     "id": "suriname",
     "name": "Suriname",
     "image": "images/Flag_of_Suriname-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "sweden",
@@ -1564,80 +2904,163 @@
     "id": "switzerland",
     "name": "Switzerland",
     "image": "images/Flag_of_Switzerland-256x256.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "solid-field",
+      "centered-cross"
+    ],
+    "symbols": [
+      "cross"
+    ]
   },
   {
     "id": "syria",
     "name": "Syria",
     "image": "images/Flag_of_Syria-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "black",
+      "green"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "taiwan",
     "name": "Taiwan",
     "image": "images/Flag_of_Taiwan_Republic_of_China-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "solid-field",
+      "canton"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "tajikistan",
     "name": "Tajikistan",
     "image": "images/Flag_of_Tajikistan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white",
+      "green",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "crown",
+      "stars"
+    ]
   },
   {
     "id": "tanzania",
     "name": "Tanzania",
     "image": "images/Flag_of_Tanzania-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "yellow",
+      "black",
+      "blue"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
     "symbols": []
   },
   {
     "id": "thailand",
     "name": "Thailand",
     "image": "images/Flag_of_Thailand-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white",
+      "blue"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
     "symbols": []
   },
   {
     "id": "togo",
     "name": "Togo",
     "image": "images/Flag_of_Togo-256x158.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "canton"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "tonga",
     "name": "Tonga",
     "image": "images/Flag_of_Tonga-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "white"
+    ],
+    "layout": [
+      "solid-field",
+      "canton"
+    ],
+    "symbols": [
+      "cross"
+    ]
   },
   {
     "id": "transnistria",
     "name": "Transnistria",
     "image": "images/Flag_of_Transnistria-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-triband",
+      "canton"
+    ],
+    "symbols": [
+      "hammer-and-sickle",
+      "star"
+    ]
   },
   {
     "id": "trinidad-and-tobago",
     "name": "Trinidad and Tobago",
     "image": "images/Flag_of_Trinidad_and_Tobago-256x153.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "diagonal-stripe"
+    ],
     "symbols": []
   },
   {
@@ -1649,12 +3072,10 @@
       "white"
     ],
     "layout": [
-      "solid-field",
-      "centered-emblem"
+      "solid-field"
     ],
     "symbols": [
-      "crescent",
-      "star",
+      "crescent-moon-star",
       "disc"
     ]
   },
@@ -1670,56 +3091,107 @@
       "solid-field"
     ],
     "symbols": [
-      "crescent",
-      "star"
+      "crescent-moon-star"
     ]
   },
   {
     "id": "turkish-republic-of-northern-cyprus",
     "name": "Turkish Republic of Northern Cyprus",
     "image": "images/Flag_of_Turkish_Republic_of_Northern_Cyprus-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "crescent-moon-star"
+    ]
   },
   {
     "id": "turkmenistan",
     "name": "Turkmenistan",
     "image": "images/Flag_of_Turkmenistan-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "white",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field",
+      "hoist-pattern"
+    ],
+    "symbols": [
+      "crescent-moon-star",
+      "stars",
+      "ornament"
+    ]
   },
   {
     "id": "tuvalu",
     "name": "Tuvalu",
     "image": "images/Flag_of_Tuvalu-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "canton"
+    ],
+    "symbols": [
+      "stars",
+      "union-jack"
+    ]
   },
   {
     "id": "uganda",
     "name": "Uganda",
     "image": "images/Flag_of_Uganda-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "black",
+      "yellow",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "bird",
+      "disc"
+    ]
   },
   {
     "id": "ukraine",
     "name": "Ukraine",
     "image": "images/Flag_of_Ukraine-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "horizontal-bicolor"
+    ],
     "symbols": []
   },
   {
     "id": "united-arab-emirates",
     "name": "United Arab Emirates",
     "image": "images/Flag_of_United_Arab_Emirates-256x128.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "green",
+      "white",
+      "black",
+      "red"
+    ],
+    "layout": [
+      "vertical-hoist",
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
@@ -1761,49 +3233,104 @@
     "id": "uruguay",
     "name": "Uruguay",
     "image": "images/Flag_of_Uruguay-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "white",
+      "blue",
+      "yellow"
+    ],
+    "layout": [
+      "stripes",
+      "canton"
+    ],
+    "symbols": [
+      "sun"
+    ]
   },
   {
     "id": "uzbekistan",
     "name": "Uzbekistan",
     "image": "images/Flag_of_Uzbekistan-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "blue",
+      "white",
+      "green",
+      "red"
+    ],
+    "layout": [
+      "horizontal-stripes"
+    ],
+    "symbols": [
+      "crescent-moon-star",
+      "stars"
+    ]
   },
   {
     "id": "vanuatu",
     "name": "Vanuatu",
     "image": "images/Flag_of_Vanuatu-256x153.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "green",
+      "black",
+      "yellow"
+    ],
+    "layout": [
+      "y-shape",
+      "horizontal-bands"
+    ],
+    "symbols": [
+      "tusk",
+      "leaves"
+    ]
   },
   {
     "id": "vatican-city",
     "name": "Vatican City",
     "image": "images/Flag_of_Vatican_City-256x256.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "white",
+      "red"
+    ],
+    "layout": [
+      "vertical-bicolor"
+    ],
+    "symbols": [
+      "keys",
+      "tiara"
+    ]
   },
   {
     "id": "venezuela",
     "name": "Venezuela",
     "image": "images/Flag_of_Venezuela-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "yellow",
+      "blue",
+      "red",
+      "white"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
+    "symbols": [
+      "stars"
+    ]
   },
   {
     "id": "vietnam",
     "name": "Vietnam",
     "image": "images/Flag_of_Vietnam-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "star"
+    ]
   },
   {
     "id": "wales",
@@ -1815,8 +3342,7 @@
       "green"
     ],
     "layout": [
-      "horizontal-bicolor",
-      "centered-emblem"
+      "horizontal-bicolor"
     ],
     "symbols": [
       "dragon"
@@ -1826,24 +3352,52 @@
     "id": "yemen",
     "name": "Yemen",
     "image": "images/Flag_of_Yemen-256x171.png",
-    "colors": [],
-    "layout": [],
+    "colors": [
+      "red",
+      "white",
+      "black"
+    ],
+    "layout": [
+      "horizontal-tricolor"
+    ],
     "symbols": []
   },
   {
     "id": "zambia",
     "name": "Zambia",
     "image": "images/Flag_of_Zambia-256x171.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "red",
+      "black",
+      "orange"
+    ],
+    "layout": [
+      "solid-field",
+      "fly-stripes"
+    ],
+    "symbols": [
+      "eagle"
+    ]
   },
   {
     "id": "zimbabwe",
     "name": "Zimbabwe",
     "image": "images/Flag_of_Zimbabwe-256x128.png",
-    "colors": [],
-    "layout": [],
-    "symbols": []
+    "colors": [
+      "green",
+      "yellow",
+      "red",
+      "black",
+      "white"
+    ],
+    "layout": [
+      "horizontal-stripes",
+      "hoist-triangle"
+    ],
+    "symbols": [
+      "star",
+      "bird"
+    ]
   }
 ]

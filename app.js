@@ -12,6 +12,7 @@ let mouse = { x: 0, y: 0 };
 
 const relationFilters = {
   colors: false,
+  commonColors: false,
   layout: false,
   symbols: false,
 };
@@ -51,15 +52,43 @@ function sharedCount(a, b, key) {
 
 function colorsFullyMatch(a, b) {
   if (!a.colors || !b.colors) return false;
-  if (a.colors.length === 0 || b.colors.length === 0) return false;
-  if (a.colors.length !== b.colors.length) return false;
 
-  return a.colors.every(color => b.colors.includes(color));
+  const aColors = [...new Set(a.colors)];
+  const bColors = [...new Set(b.colors)];
+
+  if (aColors.length === 0 || bColors.length === 0) return false;
+  if (aColors.length !== bColors.length) return false;
+
+  return aColors.every(color => bColors.includes(color));
+}
+
+function colorsSubsetMatch(a, b) {
+  // Only meaningful when a flag is selected
+  if (!selectedFlag) return false;
+  if (!a.colors || !b.colors) return false;
+
+  const selectedColors = [...new Set(selectedFlag.colors || [])];
+  const other = a.id === selectedFlag.id ? b : a;
+  const otherColors = [...new Set(other.colors || [])];
+
+  if (selectedColors.length === 0 || otherColors.length === 0) return false;
+
+  // Match if exact same OR missing exactly one color
+  if (otherColors.length === selectedColors.length) {
+    return otherColors.every(c => selectedColors.includes(c));
+  }
+
+  if (otherColors.length === selectedColors.length - 1) {
+    return otherColors.every(c => selectedColors.includes(c));
+  }
+
+  return false;
 }
 
 function relationMatches(a, b) {
   return {
     colors: colorsFullyMatch(a, b),
+    commonColors: colorsSubsetMatch(a, b),
     layout: sharedCount(a, b, "layout") > 0,
     symbols: sharedCount(a, b, "symbols") > 0,
   };
@@ -80,8 +109,23 @@ function passesRelationFilters(a, b) {
     return matches.colors || matches.layout || matches.symbols;
   }
 
-  // Filter mode: every selected filter must match.
-  return active.every(key => matches[key]);
+  // Special case: color filters should OR together
+  const colorFiltersActive = relationFilters.colors || relationFilters.commonColors;
+
+  let colorMatch = true;
+  if (colorFiltersActive) {
+    colorMatch = (
+      (relationFilters.colors && matches.colors) ||
+      (relationFilters.commonColors && matches.commonColors)
+    );
+  }
+
+  // Other filters (layout, symbols) must still AND
+  const otherMatch = active
+    .filter(k => k !== "colors" && k !== "commonColors")
+    .every(k => matches[k]);
+
+  return colorMatch && otherMatch;
 }
 
 function similarity(a, b) {
@@ -91,6 +135,7 @@ function similarity(a, b) {
   let score = 0;
 
   if (matches.colors) score += 6;
+  else if (matches.commonColors) score += 4;
   if (matches.layout) score += sharedCount(a, b, "layout") * 3;
   if (matches.symbols) score += sharedCount(a, b, "symbols") * 2;
 
@@ -215,36 +260,56 @@ function draw() {
 function drawHover() {
   if (!hoveredFlag) return;
 
-  const padding = 6;
+  const padding = 8;
+  const imgW = 120;
+  const imgH = 70;
+
   ctx.font = "12px Arial";
   const textWidth = ctx.measureText(hoveredFlag.name).width;
-  const w = textWidth + padding * 2;
-  const h = 20;
+
+  const w = Math.max(imgW, textWidth) + padding * 2;
+  const h = imgH + 24 + padding * 2;
 
   let x = mouse.x + 12;
   let y = mouse.y + 12;
 
-  // keep inside canvas
   if (x + w > canvas.width) x = mouse.x - w - 12;
   if (y + h > canvas.height) y = mouse.y - h - 12;
 
-  ctx.fillStyle = "rgba(15,23,42,0.9)";
-  roundRect(x, y, w, h, 6);
+  // background
+  ctx.fillStyle = "rgba(15,23,42,0.95)";
+  roundRect(x, y, w, h, 8);
   ctx.fill();
 
   ctx.strokeStyle = "rgba(148,163,184,0.4)";
   ctx.stroke();
 
+  // image
+  if (hoveredFlag.img && hoveredFlag.img.complete && hoveredFlag.img.naturalWidth > 0) {
+    drawImageCover(
+      hoveredFlag.img,
+      x + padding,
+      y + padding,
+      w - padding * 2,
+      imgH
+    );
+  }
+
+  // text
   ctx.fillStyle = "white";
   ctx.textBaseline = "middle";
-  ctx.fillText(hoveredFlag.name, x + padding, y + h / 2);
+  ctx.fillText(
+    hoveredFlag.name,
+    x + padding,
+    y + padding + imgH + 12
+  );
 }
 
 function drawMenu() {
   const x = 14;
   const y = 14;
   const w = 190;
-  const h = 112;
+  const h = 138;
 
   ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
   roundRect(x, y, w, h, 10);
@@ -261,8 +326,9 @@ function drawMenu() {
   ctx.fillText("Relations", x + 12, y + 18);
 
   drawCheckbox("colors", "Exact same colors", x + 12, y + 42);
-  drawCheckbox("layout", "Common layout", x + 12, y + 68);
-  drawCheckbox("symbols", "Common symbols", x + 12, y + 94);
+  drawCheckbox("commonColors", "Almost same colors", x + 12, y + 68);
+  drawCheckbox("layout", "Common layout", x + 12, y + 94);
+  drawCheckbox("symbols", "Common symbols", x + 12, y + 120);
 }
 
 function drawCheckbox(key, label, x, y) {
@@ -284,8 +350,9 @@ function drawCheckbox(key, label, x, y) {
 function handleMenuClick(x, y) {
   const items = [
     { key: "colors", x: 26, y: 48, w: 160, h: 22 },
-    { key: "layout", x: 26, y: 74, w: 160, h: 22 },
-    { key: "symbols", x: 26, y: 100, w: 160, h: 22 },
+    { key: "commonColors", x: 26, y: 74, w: 160, h: 22 },
+    { key: "layout", x: 26, y: 100, w: 160, h: 22 },
+    { key: "symbols", x: 26, y: 126, w: 160, h: 22 },
   ];
 
   const hit = items.find(item =>
@@ -296,7 +363,15 @@ function handleMenuClick(x, y) {
   if (!hit) return false;
 
   relationFilters[hit.key] = !relationFilters[hit.key];
-  arrangeBySimilarity();
+
+  // Make color filters mutually exclusive
+  if (hit.key === "colors" && relationFilters.colors) {
+    relationFilters.commonColors = false;
+  }
+  if (hit.key === "commonColors" && relationFilters.commonColors) {
+    relationFilters.colors = false;
+  }
+
   draw();
   return true;
 }
@@ -448,12 +523,18 @@ function placeLabel(flag, placedLabels, isSelected) {
     { x: flag.x - radius - 8 - boxWidth, y: flag.y - radius - 2 - boxHeight },
   ];
 
-  const nodes = flags.map(f => ({
-    x: f.x - NODE_RADIUS - 3,
-    y: f.y - NODE_RADIUS - 3,
-    w: (NODE_RADIUS + 3) * 2,
-    h: (NODE_RADIUS + 3) * 2,
-  }));
+  const nodes = flags
+    .filter(f =>
+      !selectedFlag ||
+      f.id === selectedFlag.id ||
+      passesRelationFilters(f, selectedFlag)
+    )
+    .map(f => ({
+      x: f.x - NODE_RADIUS - 3,
+      y: f.y - NODE_RADIUS - 3,
+      w: (NODE_RADIUS + 3) * 2,
+      h: (NODE_RADIUS + 3) * 2,
+    }));
 
   for (const c of candidates) {
     const label = {
