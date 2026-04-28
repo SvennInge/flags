@@ -1,8 +1,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 1200;
-canvas.height = 850;
+canvas.width = 1500;
+canvas.height = 1100;
 
 let flags = [];
 let selectedFlag = null;
@@ -17,10 +17,10 @@ const relationFilters = {
   symbols: false,
 };
 
-const NODE_RADIUS = 22;
+const NODE_RADIUS = 25;
 const SELECTED_RADIUS = 28;
-const LINK_MIN_DISTANCE = 62;
-const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 10;
+const LINK_MIN_DISTANCE = 20;
+const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 20;
 const LABEL_PADDING = 6;
 
 fetch("flags.json")
@@ -63,9 +63,12 @@ function colorsFullyMatch(a, b) {
 }
 
 function colorsSubsetMatch(a, b) {
-  // Only meaningful when a flag is selected
-  if (!selectedFlag) return false;
   if (!a.colors || !b.colors) return false;
+
+  // No highlighted flag: fall back to exact same colors.
+  if (!selectedFlag) {
+    return colorsFullyMatch(a, b);
+  }
 
   const selectedColors = [...new Set(selectedFlag.colors || [])];
   const other = a.id === selectedFlag.id ? b : a;
@@ -73,7 +76,7 @@ function colorsSubsetMatch(a, b) {
 
   if (selectedColors.length === 0 || otherColors.length === 0) return false;
 
-  // Match if exact same OR missing exactly one color
+  // Match if exact same OR missing exactly one color.
   if (otherColors.length === selectedColors.length) {
     return otherColors.every(c => selectedColors.includes(c));
   }
