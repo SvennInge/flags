@@ -9,6 +9,7 @@ let selectedFlag = null;
 let loadedImageCount = 0;
 let hoveredFlag = null;
 let mouse = { x: 0, y: 0 };
+let tagMenuScroll = 0;
 
 const relationFilters = {
   colors: false,
@@ -27,6 +28,9 @@ const SELECTED_RADIUS = 28;
 const LINK_MIN_DISTANCE = 20;
 const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 20;
 const LABEL_PADDING = 6;
+
+const MAIN_MENU = { x: 14, y: 14, w: 190, h: 138 };
+const TAG_MENU = { x: 14, y: 162, w: 190, h: 680 };
 
 fetch("flags.json")
   .then(res => res.json())
@@ -70,7 +74,6 @@ function colorsFullyMatch(a, b) {
 function colorsSubsetMatch(a, b) {
   if (!a.colors || !b.colors) return false;
 
-  // No highlighted flag: fall back to exact same colors.
   if (!selectedFlag) {
     return colorsFullyMatch(a, b);
   }
@@ -81,7 +84,6 @@ function colorsSubsetMatch(a, b) {
 
   if (selectedColors.length === 0 || otherColors.length === 0) return false;
 
-  // Match if exact same OR missing exactly one color.
   if (otherColors.length === selectedColors.length) {
     return otherColors.every(c => selectedColors.includes(c));
   }
@@ -112,20 +114,17 @@ function passesRelationFilters(a, b) {
   const active = activeFilterKeys();
   const matches = relationMatches(a, b);
 
-  // Default mode: show any relation.
   if (active.length === 0) {
     return matches.colors || matches.layout || matches.symbols;
   }
 
-  // Color filters are mutually exclusive in the UI, but this still handles both safely.
   const colorFiltersActive = relationFilters.colors || relationFilters.commonColors;
 
   let colorMatch = true;
   if (colorFiltersActive) {
-    colorMatch = (
+    colorMatch =
       (relationFilters.colors && matches.colors) ||
-      (relationFilters.commonColors && matches.commonColors)
-    );
+      (relationFilters.commonColors && matches.commonColors);
   }
 
   let layoutMatch = true;
@@ -138,20 +137,16 @@ function passesRelationFilters(a, b) {
     symbolsMatch = matches.symbols && tagGroupMatches(a, b, "symbols");
   }
 
-  // Color group AND layout group AND symbol group.
-  // Inside each tag group, selected labels are OR.
   return colorMatch && layoutMatch && symbolsMatch;
 }
 
 function tagGroupMatches(a, b, key) {
   const selectedTags = tagFilters[key] || [];
 
-  // If no specific labels are selected, any shared tag in that group is enough.
   if (selectedTags.length === 0) {
     return sharedCount(a, b, key) > 0;
   }
 
-  // OR within the same group: any selected label may match.
   return selectedTags.some(tag =>
     a[key] && b[key] && a[key].includes(tag) && b[key].includes(tag)
   );
@@ -176,9 +171,8 @@ function arrangeBySimilarity() {
   const centerY = canvas.height / 2;
   const outerRadius = Math.min(canvas.width, canvas.height) * 0.42;
 
-  // Start in a deterministic spiral instead of random positions.
   flags.forEach((f, i) => {
-    const angle = i * 2.399963; // golden angle
+    const angle = i * 2.399963;
     const r = outerRadius * Math.sqrt((i + 0.5) / flags.length);
     f.x = centerX + Math.cos(angle) * r;
     f.y = centerY + Math.sin(angle) * r;
@@ -196,7 +190,6 @@ function arrangeBySimilarity() {
         let dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
         const desiredDistance = score > 0 ? 390 - score * 28 : 430;
-
         const force = (dist - desiredDistance) * 0.003;
         const fx = (dx / dist) * force;
         const fy = (dy / dist) * force;
@@ -206,7 +199,6 @@ function arrangeBySimilarity() {
         b.x -= fx;
         b.y -= fy;
 
-        // Softer spacing for linked/similar flags.
         if (score > 0 && dist < LINK_MIN_DISTANCE) {
           const push = (LINK_MIN_DISTANCE - dist) * 0.08;
           const px = (dx / dist) * push;
@@ -220,10 +212,8 @@ function arrangeBySimilarity() {
       }
     }
 
-    // Hard global collision pass: applies to every flag pair, linked or not.
     resolveGlobalCollisions();
 
-    // Light pull toward center, otherwise the layout drifts outward.
     flags.forEach(f => {
       f.x += (centerX - f.x) * 0.0005;
       f.y += (centerY - f.y) * 0.0005;
@@ -231,7 +221,6 @@ function arrangeBySimilarity() {
     });
   }
 
-  // Final cleanup pass after layout settles.
   for (let n = 0; n < 80; n++) {
     resolveGlobalCollisions();
     flags.forEach(keepInsideCanvas);
@@ -248,7 +237,6 @@ function resolveGlobalCollisions() {
       let dy = b.y - a.y;
       let dist = Math.sqrt(dx * dx + dy * dy);
 
-      // If two nodes are exactly on top of each other, invent a direction.
       if (!dist) {
         dx = 1;
         dy = 0;
@@ -284,277 +272,6 @@ function draw() {
   drawLabels();
   drawMenu();
   drawHover();
-}
-
-function drawHover() {
-  if (!hoveredFlag) return;
-
-  const padding = 8;
-  const imgW = 120;
-  const imgH = 70;
-
-  ctx.font = "12px Arial";
-  const textWidth = ctx.measureText(hoveredFlag.name).width;
-
-  const w = Math.max(imgW, textWidth) + padding * 2;
-  const h = imgH + 24 + padding * 2;
-
-  let x = mouse.x + 12;
-  let y = mouse.y + 12;
-
-  if (x + w > canvas.width) x = mouse.x - w - 12;
-  if (y + h > canvas.height) y = mouse.y - h - 12;
-
-  // background
-  ctx.fillStyle = "rgba(15,23,42,0.95)";
-  roundRect(x, y, w, h, 8);
-  ctx.fill();
-
-  ctx.strokeStyle = "rgba(148,163,184,0.4)";
-  ctx.stroke();
-
-  // image: use contain, not cover, so the full flag is visible
-  if (hoveredFlag.img && hoveredFlag.img.complete && hoveredFlag.img.naturalWidth > 0) {
-    drawImageContain(
-      hoveredFlag.img,
-      x + padding,
-      y + padding,
-      w - padding * 2,
-      imgH
-    );
-  }
-
-  // text
-  ctx.fillStyle = "white";
-  ctx.textBaseline = "middle";
-  ctx.fillText(
-    hoveredFlag.name,
-    x + padding,
-    y + padding + imgH + 12
-  );
-}
-
-function drawMenu() {
-  const x = 14;
-  const y = 14;
-  const w = 190;
-  const h = 138;
-
-  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
-  roundRect(x, y, w, h, 10);
-  ctx.fill();
-
-  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
-  ctx.lineWidth = 1;
-  roundRect(x, y, w, h, 10);
-  ctx.stroke();
-
-  ctx.fillStyle = "white";
-  ctx.font = "bold 13px Arial";
-  ctx.textBaseline = "middle";
-  ctx.fillText("Relations", x + 12, y + 18);
-
-  drawCheckbox("colors", "Exact same colors", x + 12, y + 42);
-  drawCheckbox("commonColors", "Almost same colors", x + 12, y + 68);
-  drawCheckbox("layout", "Common layout", x + 12, y + 94);
-  drawCheckbox("symbols", "Common symbols", x + 12, y + 120);
-
-  drawTagFilterMenu(x, y + h + 10, w);
-}
-
-function drawTagFilterMenu(x, y, w) {
-  const sections = [];
-
-  if (relationFilters.layout) {
-    sections.push({ key: "layout", title: "Layout labels", tags: getAvailableTags("layout") });
-  }
-
-  if (relationFilters.symbols) {
-    sections.push({ key: "symbols", title: "Symbol labels", tags: getAvailableTags("symbols") });
-  }
-
-  if (sections.length === 0) return;
-
-  const rowHeight = 22;
-  const sectionTitleHeight = 22;
-  const maxTextWidth = w - 38;
-  let height = 14;
-
-  sections.forEach(section => {
-    height += sectionTitleHeight + section.tags.length * rowHeight;
-  });
-
-  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
-  roundRect(x, y, w, height, 10);
-  ctx.fill();
-
-  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
-  ctx.lineWidth = 1;
-  roundRect(x, y, w, height, 10);
-  ctx.stroke();
-
-  let cursorY = y + 16;
-
-  sections.forEach(section => {
-    ctx.fillStyle = "white";
-    ctx.font = "bold 12px Arial";
-    ctx.textBaseline = "middle";
-    ctx.fillText(section.title, x + 12, cursorY);
-    cursorY += sectionTitleHeight;
-
-    section.tags.forEach(tag => {
-      const selected = tagFilters[section.key].includes(tag);
-
-      ctx.strokeStyle = "rgba(226, 232, 240, 0.75)";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(x + 12, cursorY - 8, 14, 14);
-
-      if (selected) {
-        ctx.fillStyle = "#38bdf8";
-        ctx.fillRect(x + 15, cursorY - 5, 8, 8);
-      }
-
-      ctx.fillStyle = "white";
-      ctx.font = "11px Arial";
-      ctx.fillText(shortenLabel(tag, maxTextWidth), x + 34, cursorY - 1);
-      cursorY += rowHeight;
-    });
-  });
-}
-
-function drawCheckbox(key, label, x, y) {
-  ctx.strokeStyle = "rgba(226, 232, 240, 0.75)";
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(x, y - 8, 14, 14);
-
-  if (relationFilters[key]) {
-    ctx.fillStyle = "#38bdf8";
-    ctx.fillRect(x + 3, y - 5, 8, 8);
-  }
-
-  ctx.fillStyle = "white";
-  ctx.font = "12px Arial";
-  ctx.textBaseline = "middle";
-  ctx.fillText(label, x + 22, y - 1);
-}
-
-function handleMenuClick(x, y) {
-  if (handleTagFilterClick(x, y)) return true;
-
-  const items = [
-    { key: "colors", x: 26, y: 48, w: 160, h: 22 },
-    { key: "commonColors", x: 26, y: 74, w: 160, h: 22 },
-    { key: "layout", x: 26, y: 100, w: 160, h: 22 },
-    { key: "symbols", x: 26, y: 126, w: 160, h: 22 },
-  ];
-
-  const hit = items.find(item =>
-    x >= item.x && x <= item.x + item.w &&
-    y >= item.y - 12 && y <= item.y - 12 + item.h
-  );
-
-  if (!hit) return false;
-
-  relationFilters[hit.key] = !relationFilters[hit.key];
-
-  // Make color filters mutually exclusive
-  if (hit.key === "colors" && relationFilters.colors) {
-    relationFilters.commonColors = false;
-  }
-  if (hit.key === "commonColors" && relationFilters.commonColors) {
-    relationFilters.colors = false;
-  }
-
-  // Clear tag selections when the parent relation is disabled.
-  if (hit.key === "layout" && !relationFilters.layout) {
-    tagFilters.layout = [];
-  }
-  if (hit.key === "symbols" && !relationFilters.symbols) {
-    tagFilters.symbols = [];
-  }
-
-  draw();
-  return true;
-}
-
-function handleTagFilterClick(x, y) {
-  const menuX = 14;
-  const menuY = 14 + 138 + 10;
-  const menuW = 190;
-  const rowHeight = 22;
-  const sectionTitleHeight = 22;
-
-  const sections = [];
-  if (relationFilters.layout) sections.push({ key: "layout", tags: getAvailableTags("layout") });
-  if (relationFilters.symbols) sections.push({ key: "symbols", tags: getAvailableTags("symbols") });
-
-  if (sections.length === 0) return false;
-  if (x < menuX || x > menuX + menuW) return false;
-
-  let cursorY = menuY + 16;
-
-  for (const section of sections) {
-    cursorY += sectionTitleHeight;
-
-    for (const tag of section.tags) {
-      const rowTop = cursorY - 12;
-      const rowBottom = rowTop + rowHeight;
-
-      if (y >= rowTop && y <= rowBottom) {
-        toggleTagFilter(section.key, tag);
-        draw();
-        return true;
-      }
-
-      cursorY += rowHeight;
-    }
-  }
-
-  return false;
-}
-
-function toggleTagFilter(key, tag) {
-  const list = tagFilters[key];
-  const index = list.indexOf(tag);
-
-  if (index >= 0) {
-    list.splice(index, 1);
-  } else {
-    list.push(tag);
-  }
-}
-
-function getAvailableTags(key) {
-  const tags = new Set();
-
-  const sourceFlags = selectedFlag ? [selectedFlag] : flags;
-
-  sourceFlags.forEach(flag => {
-    (flag[key] || []).forEach(tag => tags.add(tag));
-  });
-
-  return [...tags].sort();
-}
-
-function cleanTagFiltersForSelectedFlag() {
-  if (!selectedFlag) return;
-
-  ["layout", "symbols"].forEach(key => {
-    const allowed = new Set(selectedFlag[key] || []);
-    tagFilters[key] = tagFilters[key].filter(tag => allowed.has(tag));
-  });
-}
-
-function shortenLabel(text, maxWidth) {
-  ctx.font = "11px Arial";
-  if (ctx.measureText(text).width <= maxWidth) return text;
-
-  let shortened = text;
-  while (shortened.length > 3 && ctx.measureText(shortened + "...").width > maxWidth) {
-    shortened = shortened.slice(0, -1);
-  }
-
-  return shortened + "...";
 }
 
 function drawStatusText() {
@@ -649,8 +366,6 @@ function getRelevantFlagIds() {
     return relevant;
   }
 
-  // If specific layout/symbol tags are selected, keep flags with those tags bright
-  // even if they have no matching partner.
   flags.forEach(f => {
     const hasSelectedLayout =
       relationFilters.layout &&
@@ -681,6 +396,162 @@ function getRelevantFlagIds() {
   }
 
   return relevant;
+}
+
+function drawMenu() {
+  const { x, y, w, h } = MAIN_MENU;
+
+  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+  roundRect(x, y, w, h, 10);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+  ctx.lineWidth = 1;
+  roundRect(x, y, w, h, 10);
+  ctx.stroke();
+
+  ctx.fillStyle = "white";
+  ctx.font = "bold 13px Arial";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Relations", x + 12, y + 18);
+
+  drawCheckbox("colors", "Exact same colors", x + 12, y + 42);
+  drawCheckbox("commonColors", "Almost same colors", x + 12, y + 68);
+  drawCheckbox("layout", "Common layout", x + 12, y + 94);
+  drawCheckbox("symbols", "Common symbols", x + 12, y + 120);
+
+  drawTagFilterMenu(TAG_MENU.x, TAG_MENU.y, TAG_MENU.w);
+}
+
+function drawTagFilterMenu(x, y, w) {
+  const sections = getTagMenuSections();
+  if (sections.length === 0) return;
+
+  const rowHeight = 26;
+  const sectionTitleHeight = 22;
+  const maxTextWidth = w - 38;
+  const visibleHeight = TAG_MENU.h;
+
+  clampTagMenuScroll(sections, rowHeight, sectionTitleHeight);
+
+  ctx.save();
+
+  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+  roundRect(x, y, w, visibleHeight, 10);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+  ctx.lineWidth = 1;
+  roundRect(x, y, w, visibleHeight, 10);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.rect(x, y, w, visibleHeight);
+  ctx.clip();
+
+  let cursorY = y + 16 - tagMenuScroll;
+
+  sections.forEach(section => {
+    ctx.fillStyle = "white";
+    ctx.font = "bold 12px Arial";
+    ctx.textBaseline = "middle";
+    ctx.fillText(section.title, x + 12, cursorY);
+    cursorY += sectionTitleHeight;
+
+    section.tags.forEach(tag => {
+      const selected = tagFilters[section.key].includes(tag);
+
+      drawMenuCheckbox(selected, x + 12, cursorY - 1);
+
+      ctx.fillStyle = "white";
+      ctx.font = "11px Arial";
+      ctx.textBaseline = "middle";
+      ctx.fillText(shortenLabel(tag, maxTextWidth), x + 34, cursorY - 1);
+
+      cursorY += rowHeight;
+    });
+  });
+
+  ctx.restore();
+
+  drawTagMenuScrollbar(sections, rowHeight, sectionTitleHeight);
+}
+
+function drawTagMenuScrollbar(sections, rowHeight, sectionTitleHeight) {
+  const contentHeight = getTagMenuContentHeight(sections, rowHeight, sectionTitleHeight);
+  if (contentHeight <= TAG_MENU.h) return;
+
+  const trackX = TAG_MENU.x + TAG_MENU.w - 8;
+  const trackY = TAG_MENU.y + 10;
+  const trackW = 4;
+  const trackH = TAG_MENU.h - 20;
+
+  const thumbH = Math.max(28, trackH * (TAG_MENU.h / contentHeight));
+  const maxScroll = contentHeight - TAG_MENU.h + 8;
+  const thumbY = trackY + (trackH - thumbH) * (tagMenuScroll / maxScroll);
+
+  ctx.fillStyle = "rgba(148, 163, 184, 0.20)";
+  roundRect(trackX, trackY, trackW, trackH, 3);
+  ctx.fill();
+
+  ctx.fillStyle = "rgba(56, 189, 248, 0.75)";
+  roundRect(trackX, thumbY, trackW, thumbH, 3);
+  ctx.fill();
+}
+
+function drawCheckbox(key, label, x, y) {
+  drawMenuCheckbox(relationFilters[key], x, y);
+
+  ctx.fillStyle = "white";
+  ctx.font = "12px Arial";
+  ctx.textBaseline = "middle";
+  ctx.fillText(label, x + 22, y - 1);
+}
+
+function drawMenuCheckbox(selected, x, y) {
+  ctx.strokeStyle = "rgba(226, 232, 240, 0.75)";
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x, y - 8, 14, 14);
+
+  if (selected) {
+    ctx.fillStyle = "#38bdf8";
+    ctx.fillRect(x + 3, y - 5, 8, 8);
+  }
+}
+
+function drawHover() {
+  if (!hoveredFlag) return;
+
+  const padding = 8;
+  const imgW = 120;
+  const imgH = 70;
+
+  ctx.font = "12px Arial";
+  const textWidth = ctx.measureText(hoveredFlag.name).width;
+
+  const w = Math.max(imgW, textWidth) + padding * 2;
+  const h = imgH + 24 + padding * 2;
+
+  let x = mouse.x + 12;
+  let y = mouse.y + 12;
+
+  if (x + w > canvas.width) x = mouse.x - w - 12;
+  if (y + h > canvas.height) y = mouse.y - h - 12;
+
+  ctx.fillStyle = "rgba(15,23,42,0.95)";
+  roundRect(x, y, w, h, 8);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148,163,184,0.4)";
+  ctx.stroke();
+
+  if (hoveredFlag.img && hoveredFlag.img.complete && hoveredFlag.img.naturalWidth > 0) {
+    drawImageContain(hoveredFlag.img, x + padding, y + padding, w - padding * 2, imgH);
+  }
+
+  ctx.fillStyle = "white";
+  ctx.textBaseline = "middle";
+  ctx.fillText(hoveredFlag.name, x + padding, y + padding + imgH + 12);
 }
 
 function drawImageContain(img, x, y, w, h) {
@@ -733,9 +604,8 @@ function drawLabels() {
   );
 
   const placedLabels = [];
-
-  // Draw selected label first.
   const selected = visibleFlags.find(f => f.id === selectedFlag.id);
+
   if (selected) {
     const label = placeLabel(selected, placedLabels, true);
     if (label) {
@@ -744,7 +614,6 @@ function drawLabels() {
     }
   }
 
-  // Then draw connected labels, strongest similarity first.
   visibleFlags
     .filter(f => f.id !== selectedFlag.id)
     .sort((a, b) => similarity(b, selectedFlag) - similarity(a, selectedFlag))
@@ -808,7 +677,6 @@ function placeLabel(flag, placedLabels, isSelected) {
     }
   }
 
-  // If there is no clean placement, skip weaker labels instead of cluttering the map.
   return null;
 }
 
@@ -852,6 +720,146 @@ function roundRect(x, y, w, h, r) {
   ctx.closePath();
 }
 
+function getTagMenuSections() {
+  const sections = [];
+
+  if (relationFilters.layout) {
+    sections.push({ key: "layout", title: "Layout labels", tags: getAvailableTags("layout") });
+  }
+
+  if (relationFilters.symbols) {
+    sections.push({ key: "symbols", title: "Symbol labels", tags: getAvailableTags("symbols") });
+  }
+
+  return sections;
+}
+
+function getTagMenuContentHeight(sections, rowHeight, sectionTitleHeight) {
+  let height = 16;
+  sections.forEach(section => {
+    height += sectionTitleHeight + section.tags.length * rowHeight;
+  });
+  return height;
+}
+
+function clampTagMenuScroll(sections, rowHeight, sectionTitleHeight) {
+  const contentHeight = getTagMenuContentHeight(sections, rowHeight, sectionTitleHeight);
+  const maxScroll = Math.max(0, contentHeight - TAG_MENU.h + 8);
+  tagMenuScroll = Math.max(0, Math.min(tagMenuScroll, maxScroll));
+}
+
+function handleMenuClick(x, y) {
+  if (handleTagFilterClick(x, y)) return true;
+
+  const items = [
+    { key: "colors", x: 26, y: 48, w: 160, h: 24 },
+    { key: "commonColors", x: 26, y: 74, w: 160, h: 24 },
+    { key: "layout", x: 26, y: 100, w: 160, h: 24 },
+    { key: "symbols", x: 26, y: 126, w: 160, h: 24 },
+  ];
+
+  const hit = items.find(item =>
+    x >= item.x && x <= item.x + item.w &&
+    y >= item.y - 13 && y <= item.y - 13 + item.h
+  );
+
+  if (!hit) return false;
+
+  relationFilters[hit.key] = !relationFilters[hit.key];
+
+  if (hit.key === "colors" && relationFilters.colors) {
+    relationFilters.commonColors = false;
+  }
+  if (hit.key === "commonColors" && relationFilters.commonColors) {
+    relationFilters.colors = false;
+  }
+
+  if (hit.key === "layout" && !relationFilters.layout) {
+    tagFilters.layout = [];
+  }
+  if (hit.key === "symbols" && !relationFilters.symbols) {
+    tagFilters.symbols = [];
+  }
+
+  tagMenuScroll = 0;
+  draw();
+  return true;
+}
+
+function handleTagFilterClick(x, y) {
+  const sections = getTagMenuSections();
+  if (sections.length === 0) return false;
+  if (x < TAG_MENU.x || x > TAG_MENU.x + TAG_MENU.w || y < TAG_MENU.y || y > TAG_MENU.y + TAG_MENU.h) return false;
+
+  const rowHeight = 26;
+  const sectionTitleHeight = 22;
+  clampTagMenuScroll(sections, rowHeight, sectionTitleHeight);
+
+  let cursorY = TAG_MENU.y + 16 - tagMenuScroll;
+
+  for (const section of sections) {
+    cursorY += sectionTitleHeight;
+
+    for (const tag of section.tags) {
+      const rowTop = cursorY - 13;
+      const rowBottom = rowTop + rowHeight;
+
+      if (y >= rowTop && y <= rowBottom) {
+        toggleTagFilter(section.key, tag);
+        draw();
+        return true;
+      }
+
+      cursorY += rowHeight;
+    }
+  }
+
+  return true;
+}
+
+function toggleTagFilter(key, tag) {
+  const list = tagFilters[key];
+  const index = list.indexOf(tag);
+
+  if (index >= 0) {
+    list.splice(index, 1);
+  } else {
+    list.push(tag);
+  }
+}
+
+function getAvailableTags(key) {
+  const tags = new Set();
+  const sourceFlags = selectedFlag ? [selectedFlag] : flags;
+
+  sourceFlags.forEach(flag => {
+    (flag[key] || []).forEach(tag => tags.add(tag));
+  });
+
+  return [...tags].sort();
+}
+
+function cleanTagFiltersForSelectedFlag() {
+  if (!selectedFlag) return;
+
+  ["layout", "symbols"].forEach(key => {
+    const allowed = new Set(selectedFlag[key] || []);
+    tagFilters[key] = tagFilters[key].filter(tag => allowed.has(tag));
+  });
+}
+
+function shortenLabel(text, maxWidth) {
+  ctx.font = "11px Arial";
+  if (ctx.measureText(text).width <= maxWidth) return text;
+
+  let shortened = text;
+  while (shortened.length > 3 && ctx.measureText(shortened + "...").width > maxWidth) {
+    shortened = shortened.slice(0, -1);
+  }
+
+  return shortened + "...";
+}
+
 canvas.addEventListener("mousemove", event => {
   const rect = canvas.getBoundingClientRect();
   mouse.x = event.clientX - rect.left;
@@ -865,6 +873,22 @@ canvas.addEventListener("mousemove", event => {
 
   hoveredFlag = found || null;
   draw();
+});
+
+canvas.addEventListener("wheel", event => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = event.clientX - rect.left;
+  const my = event.clientY - rect.top;
+
+  if (mx >= TAG_MENU.x && mx <= TAG_MENU.x + TAG_MENU.w && my >= TAG_MENU.y && my <= TAG_MENU.y + TAG_MENU.h) {
+    const sections = getTagMenuSections();
+    if (sections.length > 0) {
+      tagMenuScroll += event.deltaY * 0.5;
+      clampTagMenuScroll(sections, 26, 22);
+      draw();
+      event.preventDefault();
+    }
+  }
 });
 
 canvas.addEventListener("click", event => {
@@ -883,6 +907,7 @@ canvas.addEventListener("click", event => {
   if (clicked) {
     selectedFlag = selectedFlag && selectedFlag.id === clicked.id ? null : clicked;
     cleanTagFiltersForSelectedFlag();
+    tagMenuScroll = 0;
     draw();
   }
 });
