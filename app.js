@@ -100,8 +100,14 @@ function colorsFullyMatch(a, b) {
 function colorsSubsetMatch(a, b) {
   if (!a.colors || !b.colors) return false;
 
+  const aColors = [...new Set(a.colors)];
+  const bColors = [...new Set(b.colors)];
+
+  if (aColors.length === 0 || bColors.length === 0) return false;
+
+  // With no selected flag, use the same rule as the default color relation.
   if (!selectedFlag) {
-    return colorsFullyMatch(a, b);
+    return colorsCompatible(a, b);
   }
 
   const selectedColors = [...new Set(selectedFlag.colors || [])];
@@ -110,17 +116,74 @@ function colorsSubsetMatch(a, b) {
 
   if (selectedColors.length === 0 || otherColors.length === 0) return false;
 
-  const exact = otherColors.length === selectedColors.length;
-  const missingOne = otherColors.length === selectedColors.length - 1;
+  // For selected flag mode:
+  // - two-color selected flags require exact match
+  // - multi-color selected flags allow exact match or the other flag having exactly one extra color
+  if (selectedColors.length <= 2) {
+    return sameColorSet(selectedColors, otherColors);
+  }
 
-  if (!exact && !missingOne) return false;
-  return otherColors.every(color => selectedColors.includes(color));
+  const exact = sameColorSet(selectedColors, otherColors);
+  const oneExtra =
+    otherColors.length === selectedColors.length + 1 &&
+    selectedColors.every(color => otherColors.includes(color));
+
+  return exact || oneExtra;
+}
+
+function sameColorSet(aColors, bColors) {
+  if (aColors.length !== bColors.length) return false;
+  return aColors.every(color => bColors.includes(color));
+}
+
+function colorsCompatible(a, b) {
+  if (!a.colors || !b.colors) return false;
+
+  const aColors = [...new Set(a.colors)];
+  const bColors = [...new Set(b.colors)];
+
+  if (aColors.length === 0 || bColors.length === 0) return false;
+
+  // Two-colored flags only link exact same color matches.
+  if (aColors.length <= 2 || bColors.length <= 2) {
+    return sameColorSet(aColors, bColors);
+  }
+
+  // Multi-colored flags link exact matches or one extra/missing color.
+  if (sameColorSet(aColors, bColors)) return true;
+
+  const lengthDiff = Math.abs(aColors.length - bColors.length);
+  if (lengthDiff !== 1) return false;
+
+  const smaller = aColors.length < bColors.length ? aColors : bColors;
+  const larger = aColors.length < bColors.length ? bColors : aColors;
+
+  return smaller.every(color => larger.includes(color));
+}
+
+function colorSimilarityRatio(a, b) {
+  if (!a.colors || !b.colors) return 0;
+
+  const aColors = [...new Set(a.colors)];
+  const bColors = [...new Set(b.colors)];
+
+  if (aColors.length === 0 || bColors.length === 0) return 0;
+
+  const shared = aColors.filter(color => bColors.includes(color)).length;
+  const union = new Set([...aColors, ...bColors]).size;
+
+  return shared / union;
+}
+
+function meaningfulColorOverlap(a, b) {
+  return colorsCompatible(a, b);
 }
 
 function relationMatches(a, b) {
   return {
     colors: colorsFullyMatch(a, b),
     commonColors: colorsSubsetMatch(a, b),
+    colorOverlap: meaningfulColorOverlap(a, b),
     layout: sharedCount(a, b, "layout") > 0,
     symbols: sharedCount(a, b, "symbols") > 0,
   };
@@ -149,7 +212,7 @@ function passesRelationFilters(a, b) {
   const matches = relationMatches(a, b);
 
   if (active.length === 0) {
-    return matches.colors || matches.layout || matches.symbols;
+    return matches.colorOverlap || matches.layout || matches.symbols;
   }
 
   let colorMatch = true;
@@ -178,8 +241,13 @@ function similarity(a, b) {
   const matches = relationMatches(a, b);
   let score = 0;
 
-  if (matches.colors) score += 6;
-  else if (matches.commonColors) score += 4;
+  if (matches.colors) {
+    score += 6;
+  } else if (matches.commonColors) {
+    score += 4;
+  } else if (matches.colorOverlap) {
+    score += colorSimilarityRatio(a, b) * 5;
+  }
   if (matches.layout) score += sharedCount(a, b, "layout") * 3;
   if (matches.symbols) score += sharedCount(a, b, "symbols") * 2;
 

@@ -356,7 +356,7 @@
       "white"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": []
   },
@@ -501,7 +501,7 @@
       "yellow"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": [
       "star-circle"
@@ -616,7 +616,7 @@
       "red"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": []
   },
@@ -926,7 +926,7 @@
       "white"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": [
       "shield-spears"
@@ -2045,7 +2045,7 @@
       "red"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": [
       "star",
@@ -2709,7 +2709,7 @@
       "yellow"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": [
       "star"
@@ -2820,7 +2820,7 @@
       "blue"
     ],
     "layout": [
-      "horizontal-tricolor"
+      "horizontal-bands"
     ],
     "symbols": []
   },
