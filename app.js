@@ -541,8 +541,14 @@ function drawHover() {
   if (!hoveredFlag) return;
 
   const padding = 8;
-  const imgW = 120;
-  const imgH = 70;
+
+  let imgW = 256;
+  let imgH = 256;
+
+  if (hoveredFlag.img && hoveredFlag.img.naturalWidth > 0) {
+    imgW = hoveredFlag.img.naturalWidth;
+    imgH = hoveredFlag.img.naturalHeight;
+  }
 
   ctx.font = "12px Arial";
   const textWidth = ctx.measureText(hoveredFlag.name).width;
@@ -564,7 +570,7 @@ function drawHover() {
   ctx.stroke();
 
   if (hoveredFlag.img && hoveredFlag.img.complete && hoveredFlag.img.naturalWidth > 0) {
-    drawImageContain(hoveredFlag.img, x + padding, y + padding, w - padding * 2, imgH);
+    ctx.drawImage(hoveredFlag.img, x + padding, y + padding, imgW, imgH);
   }
 
   ctx.fillStyle = "white";
