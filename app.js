@@ -313,9 +313,9 @@ function drawHover() {
   ctx.strokeStyle = "rgba(148,163,184,0.4)";
   ctx.stroke();
 
-  // image
+  // image: use contain, not cover, so the full flag is visible
   if (hoveredFlag.img && hoveredFlag.img.complete && hoveredFlag.img.naturalWidth > 0) {
-    drawImageCover(
+    drawImageContain(
       hoveredFlag.img,
       x + padding,
       y + padding,
@@ -596,14 +596,14 @@ function drawLines() {
 }
 
 function drawNodes() {
+  const relevantIds = getRelevantFlagIds();
+  const shouldDim = shouldDimUnassociatedFlags();
+
   flags.forEach(f => {
     const isSelected = selectedFlag && f.id === selectedFlag.id;
-    const isConnected =
-      selectedFlag === null ||
-      f.id === selectedFlag.id ||
-      passesRelationFilters(f, selectedFlag);
+    const isRelevant = !shouldDim || relevantIds.has(f.id);
 
-    ctx.globalAlpha = isConnected ? 1 : 0.16;
+    ctx.globalAlpha = isRelevant ? 1 : 0.16;
 
     const radius = isSelected ? SELECTED_RADIUS : NODE_RADIUS;
 
@@ -630,6 +630,79 @@ function drawNodes() {
 
     ctx.globalAlpha = 1;
   });
+}
+
+function shouldDimUnassociatedFlags() {
+  return selectedFlag !== null || activeFilterKeys().length > 0 || tagFilters.layout.length > 0 || tagFilters.symbols.length > 0;
+}
+
+function getRelevantFlagIds() {
+  const relevant = new Set();
+
+  if (selectedFlag) {
+    relevant.add(selectedFlag.id);
+    flags.forEach(f => {
+      if (f.id !== selectedFlag.id && passesRelationFilters(f, selectedFlag)) {
+        relevant.add(f.id);
+      }
+    });
+    return relevant;
+  }
+
+  // If specific layout/symbol tags are selected, keep flags with those tags bright
+  // even if they have no matching partner.
+  flags.forEach(f => {
+    const hasSelectedLayout =
+      relationFilters.layout &&
+      tagFilters.layout.length > 0 &&
+      tagFilters.layout.some(tag => (f.layout || []).includes(tag));
+
+    const hasSelectedSymbol =
+      relationFilters.symbols &&
+      tagFilters.symbols.length > 0 &&
+      tagFilters.symbols.some(tag => (f.symbols || []).includes(tag));
+
+    if (hasSelectedLayout || hasSelectedSymbol) {
+      relevant.add(f.id);
+    }
+  });
+
+  for (let i = 0; i < flags.length; i++) {
+    for (let j = i + 1; j < flags.length; j++) {
+      const a = flags[i];
+      const b = flags[j];
+      const score = similarity(a, b);
+
+      if (score > 0 && passesRelationFilters(a, b)) {
+        relevant.add(a.id);
+        relevant.add(b.id);
+      }
+    }
+  }
+
+  return relevant;
+}
+
+function drawImageContain(img, x, y, w, h) {
+  const imgRatio = img.naturalWidth / img.naturalHeight;
+  const boxRatio = w / h;
+
+  let drawW = w;
+  let drawH = h;
+
+  if (imgRatio > boxRatio) {
+    drawH = w / imgRatio;
+  } else {
+    drawW = h * imgRatio;
+  }
+
+  const drawX = x + (w - drawW) / 2;
+  const drawY = y + (h - drawH) / 2;
+
+  ctx.fillStyle = "rgba(255,255,255,0.08)";
+  ctx.fillRect(x, y, w, h);
+
+  ctx.drawImage(img, drawX, drawY, drawW, drawH);
 }
 
 function drawImageCover(img, x, y, w, h) {
