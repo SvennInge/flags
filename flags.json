@@ -558,6 +558,21 @@
     ]
   },
   {
+    "id": "china",
+    "name": "China",
+    "image": "images/Flag_of_Peoples_Republic_of_China-256x171.png",
+    "colors": [
+      "red",
+      "yellow"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "star-circle"
+    ]
+  },
+  {
     "id": "colombia",
     "name": "Colombia",
     "image": "images/Flag_of_Colombia-256x171.png",
@@ -589,23 +604,6 @@
     "symbols": [
       "moon",
       "stars"
-    ]
-  },
-  {
-    "id": "cook-islands",
-    "name": "Cook Islands",
-    "image": "images/Flag_of_Cook_Islands-256x128.png",
-    "colors": [
-      "blue",
-      "white",
-      "red"
-    ],
-    "layout": [
-      "canton"
-    ],
-    "symbols": [
-      "star-circle",
-      "union-jack"
     ]
   },
   {
@@ -950,21 +948,6 @@
     "symbols": [
       "star",
       "circle"
-    ]
-  },
-  {
-    "id": "micronesia",
-    "name": "Micronesia",
-    "image": "images/Flag_of_Federated_States_of_Micronesia-256x135.png",
-    "colors": [
-      "blue",
-      "white"
-    ],
-    "layout": [
-      "solid-field"
-    ],
-    "symbols": [
-      "stars"
     ]
   },
   {
@@ -1466,23 +1449,6 @@
     ]
   },
   {
-    "id": "kosovo",
-    "name": "Kosovo",
-    "image": "images/Flag_of_Kosovo-256x183.png",
-    "colors": [
-      "blue",
-      "yellow",
-      "white"
-    ],
-    "layout": [
-      "solid-field"
-    ],
-    "symbols": [
-      "map",
-      "star-circle"
-    ]
-  },
-  {
     "id": "kuwait",
     "name": "Kuwait",
     "image": "images/Flag_of_Kuwait-256x128.png",
@@ -1815,6 +1781,21 @@
     ]
   },
   {
+    "id": "micronesia",
+    "name": "Micronesia",
+    "image": "images/Flag_of_Federated_States_of_Micronesia-256x135.png",
+    "colors": [
+      "blue",
+      "white"
+    ],
+    "layout": [
+      "solid-field"
+    ],
+    "symbols": [
+      "stars"
+    ]
+  },
+  {
     "id": "moldova",
     "name": "Moldova",
     "image": "images/Flag_of_Moldova-256x128.png",
@@ -2055,24 +2036,6 @@
     "symbols": []
   },
   {
-    "id": "niue",
-    "name": "Niue",
-    "image": "images/Flag_of_Niue-256x128.png",
-    "colors": [
-      "yellow",
-      "blue",
-      "red",
-      "white"
-    ],
-    "layout": [
-      "canton"
-    ],
-    "symbols": [
-      "stars",
-      "union-jack"
-    ]
-  },
-  {
     "id": "north-korea",
     "name": "North Korea",
     "image": "images/Flag_of_North_Korea-256x128.png",
@@ -2234,21 +2197,6 @@
     ]
   },
   {
-    "id": "china",
-    "name": "China",
-    "image": "images/Flag_of_Peoples_Republic_of_China-256x171.png",
-    "colors": [
-      "red",
-      "yellow"
-    ],
-    "layout": [
-      "solid-field"
-    ],
-    "symbols": [
-      "star-circle"
-    ]
-  },
-  {
     "id": "peru",
     "name": "Peru",
     "image": "images/Flag_of_Peru-256x171.png",
@@ -2326,24 +2274,6 @@
     "symbols": []
   },
   {
-    "id": "republic-of-abkhazia",
-    "name": "Republic of Abkhazia",
-    "image": "images/Flag_of_Republic_of_Abkhazia-256x128.png",
-    "colors": [
-      "green",
-      "white",
-      "red"
-    ],
-    "layout": [
-      "horizontal-stripes",
-      "canton"
-    ],
-    "symbols": [
-      "emblem",
-      "star-circle"
-    ]
-  },
-  {
     "id": "republic-of-the-congo",
     "name": "Republic of the Congo",
     "image": "images/Flag_of_Republic_of_Congo-256x171.png",
@@ -2402,25 +2332,6 @@
     ]
   },
   {
-    "id": "sahrawi-arab-democratic-republic",
-    "name": "Sahrawi Arab Democratic Republic",
-    "image": "images/Flag_of_Sahrawi_Arab_Democratic_Republic-256x128.png",
-    "colors": [
-      "black",
-      "white",
-      "green",
-      "red"
-    ],
-    "layout": [
-      "horizontal-tricolor",
-      "hoist-triangle"
-    ],
-    "symbols": [
-      "moon",
-      "star"
-    ]
-  },
-  {
     "id": "saint-kitts-and-nevis",
     "name": "Saint Kitts and Nevis",
     "image": "images/Flag_of_Saint_Kitts_and_Nevis-256x171.png",
@@ -2453,22 +2364,6 @@
     ],
     "symbols": [
       "triangle"
-    ]
-  },
-  {
-    "id": "saint-vincent-and-the-grenadines",
-    "name": "Saint Vincent and the Grenadines",
-    "image": "images/Flag_of_Saint_Vincent_and_the_Grenadines-256x171.png",
-    "colors": [
-      "blue",
-      "yellow",
-      "green"
-    ],
-    "layout": [
-      "vertical-tricolor"
-    ],
-    "symbols": [
-      "rhombus"
     ]
   },
   {
@@ -2699,24 +2594,6 @@
     ]
   },
   {
-    "id": "somaliland",
-    "name": "Somaliland",
-    "image": "images/Flag_of_Somaliland-256x128.png",
-    "colors": [
-      "green",
-      "white",
-      "red",
-      "black"
-    ],
-    "layout": [
-      "horizontal-tricolor"
-    ],
-    "symbols": [
-      "star",
-      "script"
-    ]
-  },
-  {
     "id": "south-africa",
     "name": "South Africa",
     "image": "images/Flag_of_South_Africa-256x171.png",
@@ -2750,20 +2627,6 @@
     "symbols": [
       "circle"
     ]
-  },
-  {
-    "id": "south-ossetia",
-    "name": "South Ossetia",
-    "image": "images/Flag_of_South_Ossetia-256x128.png",
-    "colors": [
-      "white",
-      "red",
-      "yellow"
-    ],
-    "layout": [
-      "horizontal-tricolor"
-    ],
-    "symbols": []
   },
   {
     "id": "south-sudan",
@@ -2996,23 +2859,6 @@
     ]
   },
   {
-    "id": "transnistria",
-    "name": "Transnistria",
-    "image": "images/Flag_of_Transnistria-256x128.png",
-    "colors": [
-      "red",
-      "green",
-      "yellow"
-    ],
-    "layout": [
-      "horizontal-band"
-    ],
-    "symbols": [
-      "emblem",
-      "star"
-    ]
-  },
-  {
     "id": "trinidad-and-tobago",
     "name": "Trinidad and Tobago",
     "image": "images/Flag_of_Trinidad_and_Tobago-256x153.png",
@@ -3053,22 +2899,6 @@
     ],
     "layout": [
       "solid-field"
-    ],
-    "symbols": [
-      "moon",
-      "star"
-    ]
-  },
-  {
-    "id": "turkish-republic-of-northern-cyprus",
-    "name": "Turkish Republic of Northern Cyprus",
-    "image": "images/Flag_of_Turkish_Republic_of_Northern_Cyprus-256x171.png",
-    "colors": [
-      "white",
-      "red"
-    ],
-    "layout": [
-      "horizontal-stripes"
     ],
     "symbols": [
       "moon",
