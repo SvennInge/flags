@@ -17,6 +17,11 @@ const relationFilters = {
   symbols: false,
 };
 
+const tagFilters = {
+  layout: [],
+  symbols: [],
+};
+
 const NODE_RADIUS = 25;
 const SELECTED_RADIUS = 28;
 const LINK_MIN_DISTANCE = 20;
@@ -112,7 +117,7 @@ function passesRelationFilters(a, b) {
     return matches.colors || matches.layout || matches.symbols;
   }
 
-  // Special case: color filters should OR together
+  // Color filters are mutually exclusive in the UI, but this still handles both safely.
   const colorFiltersActive = relationFilters.colors || relationFilters.commonColors;
 
   let colorMatch = true;
@@ -123,12 +128,33 @@ function passesRelationFilters(a, b) {
     );
   }
 
-  // Other filters (layout, symbols) must still AND
-  const otherMatch = active
-    .filter(k => k !== "colors" && k !== "commonColors")
-    .every(k => matches[k]);
+  let layoutMatch = true;
+  if (relationFilters.layout) {
+    layoutMatch = matches.layout && tagGroupMatches(a, b, "layout");
+  }
 
-  return colorMatch && otherMatch;
+  let symbolsMatch = true;
+  if (relationFilters.symbols) {
+    symbolsMatch = matches.symbols && tagGroupMatches(a, b, "symbols");
+  }
+
+  // Color group AND layout group AND symbol group.
+  // Inside each tag group, selected labels are OR.
+  return colorMatch && layoutMatch && symbolsMatch;
+}
+
+function tagGroupMatches(a, b, key) {
+  const selectedTags = tagFilters[key] || [];
+
+  // If no specific labels are selected, any shared tag in that group is enough.
+  if (selectedTags.length === 0) {
+    return sharedCount(a, b, key) > 0;
+  }
+
+  // OR within the same group: any selected label may match.
+  return selectedTags.some(tag =>
+    a[key] && b[key] && a[key].includes(tag) && b[key].includes(tag)
+  );
 }
 
 function similarity(a, b) {
@@ -332,6 +358,68 @@ function drawMenu() {
   drawCheckbox("commonColors", "Almost same colors", x + 12, y + 68);
   drawCheckbox("layout", "Common layout", x + 12, y + 94);
   drawCheckbox("symbols", "Common symbols", x + 12, y + 120);
+
+  drawTagFilterMenu(x, y + h + 10, w);
+}
+
+function drawTagFilterMenu(x, y, w) {
+  const sections = [];
+
+  if (relationFilters.layout) {
+    sections.push({ key: "layout", title: "Layout labels", tags: getAvailableTags("layout") });
+  }
+
+  if (relationFilters.symbols) {
+    sections.push({ key: "symbols", title: "Symbol labels", tags: getAvailableTags("symbols") });
+  }
+
+  if (sections.length === 0) return;
+
+  const rowHeight = 22;
+  const sectionTitleHeight = 22;
+  const maxTextWidth = w - 38;
+  let height = 14;
+
+  sections.forEach(section => {
+    height += sectionTitleHeight + section.tags.length * rowHeight;
+  });
+
+  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+  roundRect(x, y, w, height, 10);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+  ctx.lineWidth = 1;
+  roundRect(x, y, w, height, 10);
+  ctx.stroke();
+
+  let cursorY = y + 16;
+
+  sections.forEach(section => {
+    ctx.fillStyle = "white";
+    ctx.font = "bold 12px Arial";
+    ctx.textBaseline = "middle";
+    ctx.fillText(section.title, x + 12, cursorY);
+    cursorY += sectionTitleHeight;
+
+    section.tags.forEach(tag => {
+      const selected = tagFilters[section.key].includes(tag);
+
+      ctx.strokeStyle = "rgba(226, 232, 240, 0.75)";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(x + 12, cursorY - 8, 14, 14);
+
+      if (selected) {
+        ctx.fillStyle = "#38bdf8";
+        ctx.fillRect(x + 15, cursorY - 5, 8, 8);
+      }
+
+      ctx.fillStyle = "white";
+      ctx.font = "11px Arial";
+      ctx.fillText(shortenLabel(tag, maxTextWidth), x + 34, cursorY - 1);
+      cursorY += rowHeight;
+    });
+  });
 }
 
 function drawCheckbox(key, label, x, y) {
@@ -351,6 +439,8 @@ function drawCheckbox(key, label, x, y) {
 }
 
 function handleMenuClick(x, y) {
+  if (handleTagFilterClick(x, y)) return true;
+
   const items = [
     { key: "colors", x: 26, y: 48, w: 160, h: 22 },
     { key: "commonColors", x: 26, y: 74, w: 160, h: 22 },
@@ -375,8 +465,96 @@ function handleMenuClick(x, y) {
     relationFilters.colors = false;
   }
 
+  // Clear tag selections when the parent relation is disabled.
+  if (hit.key === "layout" && !relationFilters.layout) {
+    tagFilters.layout = [];
+  }
+  if (hit.key === "symbols" && !relationFilters.symbols) {
+    tagFilters.symbols = [];
+  }
+
   draw();
   return true;
+}
+
+function handleTagFilterClick(x, y) {
+  const menuX = 14;
+  const menuY = 14 + 138 + 10;
+  const menuW = 190;
+  const rowHeight = 22;
+  const sectionTitleHeight = 22;
+
+  const sections = [];
+  if (relationFilters.layout) sections.push({ key: "layout", tags: getAvailableTags("layout") });
+  if (relationFilters.symbols) sections.push({ key: "symbols", tags: getAvailableTags("symbols") });
+
+  if (sections.length === 0) return false;
+  if (x < menuX || x > menuX + menuW) return false;
+
+  let cursorY = menuY + 16;
+
+  for (const section of sections) {
+    cursorY += sectionTitleHeight;
+
+    for (const tag of section.tags) {
+      const rowTop = cursorY - 12;
+      const rowBottom = rowTop + rowHeight;
+
+      if (y >= rowTop && y <= rowBottom) {
+        toggleTagFilter(section.key, tag);
+        draw();
+        return true;
+      }
+
+      cursorY += rowHeight;
+    }
+  }
+
+  return false;
+}
+
+function toggleTagFilter(key, tag) {
+  const list = tagFilters[key];
+  const index = list.indexOf(tag);
+
+  if (index >= 0) {
+    list.splice(index, 1);
+  } else {
+    list.push(tag);
+  }
+}
+
+function getAvailableTags(key) {
+  const tags = new Set();
+
+  const sourceFlags = selectedFlag ? [selectedFlag] : flags;
+
+  sourceFlags.forEach(flag => {
+    (flag[key] || []).forEach(tag => tags.add(tag));
+  });
+
+  return [...tags].sort();
+}
+
+function cleanTagFiltersForSelectedFlag() {
+  if (!selectedFlag) return;
+
+  ["layout", "symbols"].forEach(key => {
+    const allowed = new Set(selectedFlag[key] || []);
+    tagFilters[key] = tagFilters[key].filter(tag => allowed.has(tag));
+  });
+}
+
+function shortenLabel(text, maxWidth) {
+  ctx.font = "11px Arial";
+  if (ctx.measureText(text).width <= maxWidth) return text;
+
+  let shortened = text;
+  while (shortened.length > 3 && ctx.measureText(shortened + "...").width > maxWidth) {
+    shortened = shortened.slice(0, -1);
+  }
+
+  return shortened + "...";
 }
 
 function drawStatusText() {
@@ -631,6 +809,7 @@ canvas.addEventListener("click", event => {
 
   if (clicked) {
     selectedFlag = selectedFlag && selectedFlag.id === clicked.id ? null : clicked;
+    cleanTagFiltersForSelectedFlag();
     draw();
   }
 });
