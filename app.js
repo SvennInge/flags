@@ -85,40 +85,49 @@ function sharedCount(a, b, key) {
   return a[key].filter(item => b[key].includes(item)).length;
 }
 
+function getMainColors(flag) {
+  return [...new Set(flag.colors?.main || [])];
+}
+
+function getSecondaryColors(flag) {
+  return [...new Set(flag.colors?.secondary || [])];
+}
+
+function getAllColors(flag) {
+  return [...new Set([...getMainColors(flag), ...getSecondaryColors(flag)])];
+}
+
 function colorsFullyMatch(a, b) {
-  if (!a.colors || !b.colors) return false;
+  const aMain = getMainColors(a);
+  const bMain = getMainColors(b);
+  const aSecondary = getSecondaryColors(a);
+  const bSecondary = getSecondaryColors(b);
 
-  const aColors = [...new Set(a.colors)];
-  const bColors = [...new Set(b.colors)];
+  if (aMain.length === 0 || bMain.length === 0) return false;
 
-  if (aColors.length === 0 || bColors.length === 0) return false;
-  if (aColors.length !== bColors.length) return false;
-
-  return aColors.every(color => bColors.includes(color));
+  return sameColorSet(aMain, bMain) && sameColorSet(aSecondary, bSecondary);
 }
 
 function colorsSubsetMatch(a, b) {
-  if (!a.colors || !b.colors) return false;
+  const aMain = getMainColors(a);
+  const bMain = getMainColors(b);
 
-  const aColors = [...new Set(a.colors)];
-  const bColors = [...new Set(b.colors)];
-
-  if (aColors.length === 0 || bColors.length === 0) return false;
+  if (aMain.length === 0 || bMain.length === 0) return false;
 
   // With no selected flag, use the same rule as the default color relation.
   if (!selectedFlag) {
     return colorsCompatible(a, b);
   }
 
-  const selectedColors = [...new Set(selectedFlag.colors || [])];
+  const selectedColors = getMainColors(selectedFlag);
   const other = a.id === selectedFlag.id ? b : a;
-  const otherColors = [...new Set(other.colors || [])];
+  const otherColors = getMainColors(other);
 
   if (selectedColors.length === 0 || otherColors.length === 0) return false;
 
   // For selected flag mode:
-  // - two-color selected flags require exact match
-  // - multi-color selected flags allow exact match or the other flag having exactly one extra color
+  // - two-main-color selected flags require exact main-color match
+  // - multi-main-color selected flags allow exact match or the other flag having exactly one extra main color
   if (selectedColors.length <= 2) {
     return sameColorSet(selectedColors, otherColors);
   }
@@ -137,42 +146,46 @@ function sameColorSet(aColors, bColors) {
 }
 
 function colorsCompatible(a, b) {
-  if (!a.colors || !b.colors) return false;
+  const aMain = getMainColors(a);
+  const bMain = getMainColors(b);
 
-  const aColors = [...new Set(a.colors)];
-  const bColors = [...new Set(b.colors)];
+  if (aMain.length === 0 || bMain.length === 0) return false;
 
-  if (aColors.length === 0 || bColors.length === 0) return false;
-
-  // Two-colored flags only link exact same color matches.
-  if (aColors.length <= 2 || bColors.length <= 2) {
-    return sameColorSet(aColors, bColors);
+  // Two-main-color flags only link exact same main-color matches.
+  if (aMain.length <= 2 || bMain.length <= 2) {
+    return sameColorSet(aMain, bMain);
   }
 
-  // Multi-colored flags link exact matches or one extra/missing color.
-  if (sameColorSet(aColors, bColors)) return true;
+  // Multi-main-color flags link exact matches or one extra/missing main color.
+  if (sameColorSet(aMain, bMain)) return true;
 
-  const lengthDiff = Math.abs(aColors.length - bColors.length);
+  const lengthDiff = Math.abs(aMain.length - bMain.length);
   if (lengthDiff !== 1) return false;
 
-  const smaller = aColors.length < bColors.length ? aColors : bColors;
-  const larger = aColors.length < bColors.length ? bColors : aColors;
+  const smaller = aMain.length < bMain.length ? aMain : bMain;
+  const larger = aMain.length < bMain.length ? bMain : aMain;
 
   return smaller.every(color => larger.includes(color));
 }
 
 function colorSimilarityRatio(a, b) {
-  if (!a.colors || !b.colors) return 0;
+  const aMain = getMainColors(a);
+  const bMain = getMainColors(b);
 
-  const aColors = [...new Set(a.colors)];
-  const bColors = [...new Set(b.colors)];
+  if (aMain.length === 0 || bMain.length === 0) return 0;
 
-  if (aColors.length === 0 || bColors.length === 0) return 0;
+  const sharedMain = aMain.filter(color => bMain.includes(color)).length;
+  const mainUnion = new Set([...aMain, ...bMain]).size;
+  const mainRatio = sharedMain / mainUnion;
 
-  const shared = aColors.filter(color => bColors.includes(color)).length;
-  const union = new Set([...aColors, ...bColors]).size;
+  const aSecondary = getSecondaryColors(a);
+  const bSecondary = getSecondaryColors(b);
+  const sharedSecondary = aSecondary.filter(color => bSecondary.includes(color)).length;
+  const secondaryUnion = new Set([...aSecondary, ...bSecondary]).size;
+  const secondaryRatio = secondaryUnion > 0 ? sharedSecondary / secondaryUnion : 0;
 
-  return shared / union;
+  // Main colors dominate; secondary colors only slightly strengthen a line.
+  return mainRatio * 0.85 + secondaryRatio * 0.15;
 }
 
 function meaningfulColorOverlap(a, b) {
