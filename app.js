@@ -10,6 +10,7 @@ let loadedImageCount = 0;
 let hoveredFlag = null;
 let mouse = { x: 0, y: 0 };
 let tagMenuScroll = 0;
+let pendingDraw = false;
 
 const relationFilters = {
   colors: false,
@@ -36,23 +37,48 @@ fetch("flags.json")
   .then(res => res.json())
   .then(data => {
     flags = data;
+    drawLoadingScreen("Preparing map layout...");
 
-    flags.forEach(f => {
-      f.img = new Image();
-      f.img.onload = () => {
-        loadedImageCount++;
-        draw();
-      };
-      f.img.onerror = () => {
-        loadedImageCount++;
-        draw();
-      };
-      f.img.src = f.image;
-    });
+    // Give the browser a real chance to paint the loading message before layout work.
+    setTimeout(() => {
+      flags.forEach(f => {
+        f.img = new Image();
+        f.img.onload = () => {
+          loadedImageCount++;
+          requestDraw();
+        };
+        f.img.onerror = () => {
+          loadedImageCount++;
+          requestDraw();
+        };
+        f.img.src = f.image;
+      });
 
-    arrangeBySimilarity();
+      arrangeBySimilarity();
+      requestDraw();
+    }, 50);
+  });
+
+function requestDraw() {
+  if (pendingDraw) return;
+
+  pendingDraw = true;
+  requestAnimationFrame(() => {
+    pendingDraw = false;
     draw();
   });
+}
+
+function drawLoadingScreen(message) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+  ctx.font = "20px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+}
 
 function sharedCount(a, b, key) {
   if (!a[key] || !b[key]) return 0;
@@ -84,15 +110,11 @@ function colorsSubsetMatch(a, b) {
 
   if (selectedColors.length === 0 || otherColors.length === 0) return false;
 
-  if (otherColors.length === selectedColors.length) {
-    return otherColors.every(c => selectedColors.includes(c));
-  }
+  const exact = otherColors.length === selectedColors.length;
+  const missingOne = otherColors.length === selectedColors.length - 1;
 
-  if (otherColors.length === selectedColors.length - 1) {
-    return otherColors.every(c => selectedColors.includes(c));
-  }
-
-  return false;
+  if (!exact && !missingOne) return false;
+  return otherColors.every(color => selectedColors.includes(color));
 }
 
 function relationMatches(a, b) {
@@ -108,6 +130,18 @@ function activeFilterKeys() {
   return Object.keys(relationFilters).filter(key => relationFilters[key]);
 }
 
+function tagGroupMatches(a, b, key) {
+  const selectedTags = tagFilters[key] || [];
+
+  if (selectedTags.length === 0) {
+    return sharedCount(a, b, key) > 0;
+  }
+
+  return selectedTags.some(tag =>
+    a[key] && b[key] && a[key].includes(tag) && b[key].includes(tag)
+  );
+}
+
 function passesRelationFilters(a, b) {
   if (!a || !b) return false;
 
@@ -118,10 +152,8 @@ function passesRelationFilters(a, b) {
     return matches.colors || matches.layout || matches.symbols;
   }
 
-  const colorFiltersActive = relationFilters.colors || relationFilters.commonColors;
-
   let colorMatch = true;
-  if (colorFiltersActive) {
+  if (relationFilters.colors || relationFilters.commonColors) {
     colorMatch =
       (relationFilters.colors && matches.colors) ||
       (relationFilters.commonColors && matches.commonColors);
@@ -138,18 +170,6 @@ function passesRelationFilters(a, b) {
   }
 
   return colorMatch && layoutMatch && symbolsMatch;
-}
-
-function tagGroupMatches(a, b, key) {
-  const selectedTags = tagFilters[key] || [];
-
-  if (selectedTags.length === 0) {
-    return sharedCount(a, b, key) > 0;
-  }
-
-  return selectedTags.some(tag =>
-    a[key] && b[key] && a[key].includes(tag) && b[key].includes(tag)
-  );
 }
 
 function similarity(a, b) {
@@ -178,7 +198,7 @@ function arrangeBySimilarity() {
     f.y = centerY + Math.sin(angle) * r;
   });
 
-  for (let step = 0; step < 700; step++) {
+  for (let step = 0; step < 320; step++) {
     for (let i = 0; i < flags.length; i++) {
       for (let j = i + 1; j < flags.length; j++) {
         const a = flags[i];
@@ -221,7 +241,7 @@ function arrangeBySimilarity() {
     });
   }
 
-  for (let n = 0; n < 80; n++) {
+  for (let n = 0; n < 40; n++) {
     resolveGlobalCollisions();
     flags.forEach(keepInsideCanvas);
   }
@@ -319,10 +339,9 @@ function drawNodes() {
   flags.forEach(f => {
     const isSelected = selectedFlag && f.id === selectedFlag.id;
     const isRelevant = !shouldDim || relevantIds.has(f.id);
+    const radius = isSelected ? SELECTED_RADIUS : NODE_RADIUS;
 
     ctx.globalAlpha = isRelevant ? 1 : 0.16;
-
-    const radius = isSelected ? SELECTED_RADIUS : NODE_RADIUS;
 
     ctx.save();
     ctx.beginPath();
@@ -473,7 +492,6 @@ function drawTagFilterMenu(x, y, w) {
   });
 
   ctx.restore();
-
   drawTagMenuScrollbar(sections, rowHeight, sectionTitleHeight);
 }
 
@@ -782,7 +800,7 @@ function handleMenuClick(x, y) {
   }
 
   tagMenuScroll = 0;
-  draw();
+  requestDraw();
   return true;
 }
 
@@ -806,7 +824,7 @@ function handleTagFilterClick(x, y) {
 
       if (y >= rowTop && y <= rowBottom) {
         toggleTagFilter(section.key, tag);
-        draw();
+        requestDraw();
         return true;
       }
 
@@ -872,7 +890,7 @@ canvas.addEventListener("mousemove", event => {
   });
 
   hoveredFlag = found || null;
-  draw();
+  requestDraw();
 });
 
 canvas.addEventListener("wheel", event => {
@@ -885,7 +903,7 @@ canvas.addEventListener("wheel", event => {
     if (sections.length > 0) {
       tagMenuScroll += event.deltaY * 0.5;
       clampTagMenuScroll(sections, 26, 22);
-      draw();
+      requestDraw();
       event.preventDefault();
     }
   }
@@ -908,6 +926,6 @@ canvas.addEventListener("click", event => {
     selectedFlag = selectedFlag && selectedFlag.id === clicked.id ? null : clicked;
     cleanTagFiltersForSelectedFlag();
     tagMenuScroll = 0;
-    draw();
+    requestDraw();
   }
 });
