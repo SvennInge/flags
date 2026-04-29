@@ -26,7 +26,7 @@ const tagFilters = {
 
 const NODE_RADIUS = 25;
 const SELECTED_RADIUS = 28;
-const LINK_MIN_DISTANCE = 20;
+const LINK_MIN_DISTANCE = 0;
 const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 20;
 const LABEL_PADDING = 6;
 
@@ -191,60 +191,117 @@ function arrangeBySimilarity() {
   const centerY = canvas.height / 2;
   const outerRadius = Math.min(canvas.width, canvas.height) * 0.42;
 
-  flags.forEach((f, i) => {
+  // Precompute all meaningful similarity pairs once. This avoids recalculating
+  // the same pair scores hundreds of times during layout.
+  const pairs = [];
+  for (let i = 0; i < flags.length; i++) {
+    for (let j = i + 1; j < flags.length; j++) {
+      const score = similarity(flags[i], flags[j]);
+      if (score > 0) {
+        pairs.push({ a: flags[i], b: flags[j], score });
+      }
+    }
+  }
+
+  // Greedy initial ordering: each next flag is the most similar unused flag.
+  // This gives the force layout a much better starting point.
+  const ordered = buildSimilarityOrder(pairs);
+
+  ordered.forEach((f, i) => {
     const angle = i * 2.399963;
-    const r = outerRadius * Math.sqrt((i + 0.5) / flags.length);
+    const r = outerRadius * Math.sqrt((i + 0.5) / ordered.length);
     f.x = centerX + Math.cos(angle) * r;
     f.y = centerY + Math.sin(angle) * r;
   });
 
-  for (let step = 0; step < 320; step++) {
-    for (let i = 0; i < flags.length; i++) {
-      for (let j = i + 1; j < flags.length; j++) {
-        const a = flags[i];
-        const b = flags[j];
-        const score = passesRelationFilters(a, b) ? similarity(a, b) : 0;
+  // Keep only stronger relations for the attraction force. Weak relations still
+  // draw as lines, but they no longer distort the whole layout as much.
+  const attractionPairs = pairs.filter(pair => pair.score >= 6);
 
-        let dx = b.x - a.x;
-        let dy = b.y - a.y;
-        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+  for (let step = 0; step < 360; step++) {
+    attractionPairs.forEach(pair => {
+      const a = pair.a;
+      const b = pair.b;
+      const score = pair.score;
 
-        const desiredDistance = score > 0 ? 390 - score * 28 : 430;
-        const force = (dist - desiredDistance) * 0.003;
-        const fx = (dx / dist) * force;
-        const fy = (dy / dist) * force;
+      let dx = b.x - a.x;
+      let dy = b.y - a.y;
+      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-        a.x += fx;
-        a.y += fy;
-        b.x -= fx;
-        b.y -= fy;
+      // High similarity should sit close, but never closer than the global node spacing.
+      const desiredDistance = Math.max(GLOBAL_MIN_NODE_DISTANCE + 12, 230 - score * 14);
+      const force = (dist - desiredDistance) * 0.012;
 
-        if (score > 0 && dist < LINK_MIN_DISTANCE) {
-          const push = (LINK_MIN_DISTANCE - dist) * 0.08;
-          const px = (dx / dist) * push;
-          const py = (dy / dist) * push;
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
 
-          a.x -= px;
-          a.y -= py;
-          b.x += px;
-          b.y += py;
-        }
-      }
-    }
+      a.x += fx;
+      a.y += fy;
+      b.x -= fx;
+      b.y -= fy;
+    });
 
     resolveGlobalCollisions();
 
     flags.forEach(f => {
-      f.x += (centerX - f.x) * 0.0005;
-      f.y += (centerY - f.y) * 0.0005;
+      f.x += (centerX - f.x) * 0.00035;
+      f.y += (centerY - f.y) * 0.00035;
       keepInsideCanvas(f);
     });
   }
 
-  for (let n = 0; n < 40; n++) {
+  for (let n = 0; n < 50; n++) {
     resolveGlobalCollisions();
     flags.forEach(keepInsideCanvas);
   }
+}
+
+function buildSimilarityOrder(pairs) {
+  if (flags.length === 0) return [];
+
+  const unused = new Set(flags);
+  const ordered = [];
+
+  // Start with the flag that has the strongest total similarity to others.
+  let current = flags[0];
+  let bestTotal = -1;
+
+  flags.forEach(flag => {
+    const total = pairs.reduce((sum, pair) => {
+      if (pair.a === flag || pair.b === flag) return sum + pair.score;
+      return sum;
+    }, 0);
+
+    if (total > bestTotal) {
+      bestTotal = total;
+      current = flag;
+    }
+  });
+
+  while (unused.size > 0) {
+    ordered.push(current);
+    unused.delete(current);
+
+    let next = null;
+    let bestScore = -1;
+
+    unused.forEach(candidate => {
+      const pair = pairs.find(p =>
+        (p.a === current && p.b === candidate) ||
+        (p.b === current && p.a === candidate)
+      );
+      const score = pair ? pair.score : 0;
+
+      if (score > bestScore) {
+        bestScore = score;
+        next = candidate;
+      }
+    });
+
+    current = next || [...unused][0];
+  }
+
+  return ordered;
 }
 
 function resolveGlobalCollisions() {
