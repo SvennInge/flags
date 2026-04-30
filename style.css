@@ -1,11 +1,24 @@
 body {
   background: #0f172a;
   color: white;
-  font-family: Arial, sans-serif;
+  font-family: monospace;
   text-align: center;
+  margin: 0;
 }
 
 canvas {
   border: 1px solid #333;
   margin-top: 10px;
+}
+
+.title {
+  font-size: 28px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  text-align: center;
+  color: #e2e8f0;
+
+  margin: 12px 0 6px 0; /* slightly increased top margin */
+
+  text-shadow: 0 0 8px rgba(148,163,184,0.3);
 }

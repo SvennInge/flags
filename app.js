@@ -10,6 +10,7 @@ let loadedImageCount = 0;
 let hoveredFlag = null;
 let mouse = { x: 0, y: 0 };
 let tagMenuScroll = 0;
+let flagListScroll = 0;
 let pendingDraw = false;
 
 const relationFilters = {
@@ -30,8 +31,18 @@ const LINK_MIN_DISTANCE = 0;
 const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 20;
 const LABEL_PADDING = 6;
 
-const MAIN_MENU = { x: 14, y: 14, w: 190, h: 138 };
-const TAG_MENU = { x: 14, y: 162, w: 190, h: 680 };
+const SIDE_MENU_WIDTH = 170;
+
+const MAIN_MENU = { x: 14, y: 14, w: SIDE_MENU_WIDTH, h: 138 };
+const TAG_MENU = { x: 14, y: 162, w: SIDE_MENU_WIDTH, h: 680 };
+const FLAG_LIST_MENU = { x: canvas.width - SIDE_MENU_WIDTH - 14, y: 14, w: SIDE_MENU_WIDTH, h: canvas.height - 28 };
+
+const MAP_BOUNDS = {
+  left: MAIN_MENU.x + MAIN_MENU.w + 30,
+  right: FLAG_LIST_MENU.x - 30,
+  top: 38,
+  bottom: canvas.height - 38,
+};
 
 fetch("flags.json")
   .then(res => res.json())
@@ -268,9 +279,12 @@ function similarity(a, b) {
 }
 
 function arrangeBySimilarity() {
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const outerRadius = Math.min(canvas.width, canvas.height) * 0.42;
+  const centerX = (MAP_BOUNDS.left + MAP_BOUNDS.right) / 2;
+  const centerY = (MAP_BOUNDS.top + MAP_BOUNDS.bottom) / 2;
+  const outerRadius = Math.min(
+    MAP_BOUNDS.right - MAP_BOUNDS.left,
+    MAP_BOUNDS.bottom - MAP_BOUNDS.top
+  ) * 0.44;
 
   // Precompute all meaningful similarity pairs once. This avoids recalculating
   // the same pair scores hundreds of times during layout.
@@ -416,9 +430,8 @@ function resolveGlobalCollisions() {
 }
 
 function keepInsideCanvas(f) {
-  const margin = 38;
-  f.x = Math.max(margin, Math.min(canvas.width - margin, f.x));
-  f.y = Math.max(margin, Math.min(canvas.height - margin, f.y));
+  f.x = Math.max(MAP_BOUNDS.left, Math.min(MAP_BOUNDS.right, f.x));
+  f.y = Math.max(MAP_BOUNDS.top, Math.min(MAP_BOUNDS.bottom, f.y));
 }
 
 function draw() {
@@ -429,6 +442,7 @@ function draw() {
   drawNodes();
   drawLabels();
   drawMenu();
+  drawFlagList();
   drawHover();
 }
 
@@ -568,9 +582,9 @@ function drawMenu() {
   ctx.stroke();
 
   ctx.fillStyle = "white";
-  ctx.font = "bold 13px Arial";
+  ctx.font = "bold 14px monospace";
   ctx.textBaseline = "middle";
-  ctx.fillText("Relations", x + 12, y + 18);
+  ctx.fillText("FILTER", x + 12, y + 18);
 
   drawCheckbox("colors", "Exact same colors", x + 12, y + 42);
   drawCheckbox("commonColors", "Almost same colors", x + 12, y + 68);
@@ -610,7 +624,7 @@ function drawTagFilterMenu(x, y, w) {
 
   sections.forEach(section => {
     ctx.fillStyle = "white";
-    ctx.font = "bold 12px Arial";
+    ctx.font = "bold 13px monospace";
     ctx.textBaseline = "middle";
     ctx.fillText(section.title, x + 12, cursorY);
     cursorY += sectionTitleHeight;
@@ -675,6 +689,131 @@ function drawMenuCheckbox(selected, x, y) {
   }
 }
 
+function drawFlagList() {
+  const { x, y, w, h } = FLAG_LIST_MENU;
+  const rowHeight = 24;
+  const titleHeight = 34;
+  const flagsSorted = getAlphabeticalFlags();
+  const relevantIds = getRelevantFlagIds();
+  const shouldDim = shouldDimUnassociatedFlags();
+
+  clampFlagListScroll(flagsSorted, rowHeight, titleHeight);
+
+  ctx.save();
+
+  ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+  roundRect(x, y, w, h, 10);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(148, 163, 184, 0.35)";
+  ctx.lineWidth = 1;
+  roundRect(x, y, w, h, 10);
+  ctx.stroke();
+
+  ctx.fillStyle = "white";
+  ctx.font = "bold 14px monospace";
+  ctx.textBaseline = "middle";
+  ctx.fillText("FLAGS", x + 12, y + 18);
+
+  ctx.beginPath();
+  ctx.rect(x, y + titleHeight, w, h - titleHeight);
+  ctx.clip();
+
+  let cursorY = y + titleHeight + 15 - flagListScroll;
+
+  flagsSorted.forEach(flag => {
+    const isSelected = selectedFlag && selectedFlag.id === flag.id;
+    const isRelevant = !shouldDim || relevantIds.has(flag.id);
+
+    if (isSelected) {
+      ctx.fillStyle = "rgba(56, 189, 248, 0.22)";
+      roundRect(x + 8, cursorY - 12, w - 20, rowHeight - 3, 5);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.70)";
+      ctx.lineWidth = 1;
+      roundRect(x + 8, cursorY - 12, w - 20, rowHeight - 3, 5);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = isRelevant ? 1 : 0.28;
+    ctx.fillStyle = "white";
+    ctx.font = isSelected ? "bold 12px monospace" : "12px monospace";
+    ctx.textBaseline = "middle";
+    ctx.fillText(shortenLabel(flag.name, w - 30), x + 14, cursorY - 1);
+    ctx.globalAlpha = 1;
+
+    cursorY += rowHeight;
+  });
+
+  ctx.restore();
+  drawFlagListScrollbar(flagsSorted, rowHeight, titleHeight);
+}
+
+function drawFlagListScrollbar(flagsSorted, rowHeight, titleHeight) {
+  const contentHeight = titleHeight + flagsSorted.length * rowHeight;
+  if (contentHeight <= FLAG_LIST_MENU.h) return;
+
+  const trackX = FLAG_LIST_MENU.x + FLAG_LIST_MENU.w - 8;
+  const trackY = FLAG_LIST_MENU.y + titleHeight + 6;
+  const trackW = 4;
+  const trackH = FLAG_LIST_MENU.h - titleHeight - 12;
+
+  const thumbH = Math.max(28, trackH * (FLAG_LIST_MENU.h / contentHeight));
+  const maxScroll = Math.max(1, contentHeight - FLAG_LIST_MENU.h + 8);
+  const thumbY = trackY + (trackH - thumbH) * (flagListScroll / maxScroll);
+
+  ctx.fillStyle = "rgba(148, 163, 184, 0.20)";
+  roundRect(trackX, trackY, trackW, trackH, 3);
+  ctx.fill();
+
+  ctx.fillStyle = "rgba(56, 189, 248, 0.75)";
+  roundRect(trackX, thumbY, trackW, thumbH, 3);
+  ctx.fill();
+}
+
+function getAlphabeticalFlags() {
+  return [...flags].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function clampFlagListScroll(flagsSorted, rowHeight, titleHeight) {
+  const contentHeight = titleHeight + flagsSorted.length * rowHeight;
+  const maxScroll = Math.max(0, contentHeight - FLAG_LIST_MENU.h + 8);
+  flagListScroll = Math.max(0, Math.min(flagListScroll, maxScroll));
+}
+
+function handleFlagListClick(x, y) {
+  const rowHeight = 24;
+  const titleHeight = 34;
+  const flagsSorted = getAlphabeticalFlags();
+
+  if (
+    x < FLAG_LIST_MENU.x ||
+    x > FLAG_LIST_MENU.x + FLAG_LIST_MENU.w ||
+    y < FLAG_LIST_MENU.y + titleHeight ||
+    y > FLAG_LIST_MENU.y + FLAG_LIST_MENU.h
+  ) {
+    return false;
+  }
+
+  clampFlagListScroll(flagsSorted, rowHeight, titleHeight);
+
+  const index = Math.floor((y - (FLAG_LIST_MENU.y + titleHeight) + flagListScroll) / rowHeight);
+  const clicked = flagsSorted[index];
+
+  if (!clicked) return true;
+
+  selectFlag(clicked);
+  requestDraw();
+  return true;
+}
+
+function selectFlag(flag) {
+  selectedFlag = selectedFlag && selectedFlag.id === flag.id ? null : flag;
+  cleanTagFiltersForSelectedFlag();
+  tagMenuScroll = 0;
+}
+
 function drawHover() {
   if (!hoveredFlag) return;
 
@@ -688,7 +827,7 @@ function drawHover() {
     imgH = hoveredFlag.img.naturalHeight;
   }
 
-  ctx.font = "12px Arial";
+  ctx.font = "14px Arial";
   const textWidth = ctx.measureText(hoveredFlag.name).width;
 
   const w = Math.max(imgW, textWidth) + padding * 2;
@@ -824,8 +963,8 @@ function placeLabel(flag, placedLabels, isSelected) {
   for (const c of candidates) {
     const label = {
       text: flag.name,
-      x: Math.max(2, Math.min(canvas.width - boxWidth - 2, c.x)),
-      y: Math.max(2, Math.min(canvas.height - boxHeight - 2, c.y)),
+      x: Math.max(MAP_BOUNDS.left + 4, Math.min(MAP_BOUNDS.right - boxWidth - 4, c.x)),
+      y: Math.max(MAP_BOUNDS.top + 4, Math.min(MAP_BOUNDS.bottom - boxHeight - 4, c.y)),
       w: boxWidth,
       h: boxHeight,
       font,
@@ -886,11 +1025,11 @@ function getTagMenuSections() {
   const sections = [];
 
   if (relationFilters.layout) {
-    sections.push({ key: "layout", title: "Layout labels", tags: getAvailableTags("layout") });
+    sections.push({ key: "layout", title: "LAYOUT LABELS", tags: getAvailableTags("layout") });
   }
 
   if (relationFilters.symbols) {
-    sections.push({ key: "symbols", title: "Symbol labels", tags: getAvailableTags("symbols") });
+    sections.push({ key: "symbols", title: "SYMBOL LABELS", tags: getAvailableTags("symbols") });
   }
 
   return sections;
@@ -914,10 +1053,10 @@ function handleMenuClick(x, y) {
   if (handleTagFilterClick(x, y)) return true;
 
   const items = [
-    { key: "colors", x: 26, y: 48, w: 160, h: 24 },
-    { key: "commonColors", x: 26, y: 74, w: 160, h: 24 },
-    { key: "layout", x: 26, y: 100, w: 160, h: 24 },
-    { key: "symbols", x: 26, y: 126, w: 160, h: 24 },
+    { key: "colors", x: MAIN_MENU.x + 12, y: MAIN_MENU.y + 34, w: MAIN_MENU.w - 24, h: 24 },
+    { key: "commonColors", x: MAIN_MENU.x + 12, y: MAIN_MENU.y + 60, w: MAIN_MENU.w - 24, h: 24 },
+    { key: "layout", x: MAIN_MENU.x + 12, y: MAIN_MENU.y + 86, w: MAIN_MENU.w - 24, h: 24 },
+    { key: "symbols", x: MAIN_MENU.x + 12, y: MAIN_MENU.y + 112, w: MAIN_MENU.w - 24, h: 24 },
   ];
 
   const hit = items.find(item =>
@@ -1050,6 +1189,15 @@ canvas.addEventListener("wheel", event => {
       requestDraw();
       event.preventDefault();
     }
+    return;
+  }
+
+  if (mx >= FLAG_LIST_MENU.x && mx <= FLAG_LIST_MENU.x + FLAG_LIST_MENU.w && my >= FLAG_LIST_MENU.y && my <= FLAG_LIST_MENU.y + FLAG_LIST_MENU.h) {
+    const flagsSorted = getAlphabeticalFlags();
+    flagListScroll += event.deltaY * 0.5;
+    clampFlagListScroll(flagsSorted, 24, 34);
+    requestDraw();
+    event.preventDefault();
   }
 });
 
@@ -1059,6 +1207,7 @@ canvas.addEventListener("click", event => {
   const mouseY = event.clientY - rect.top;
 
   if (handleMenuClick(mouseX, mouseY)) return;
+  if (handleFlagListClick(mouseX, mouseY)) return;
 
   const clicked = flags.find(f => {
     const dx = mouseX - f.x;
@@ -1067,9 +1216,7 @@ canvas.addEventListener("click", event => {
   });
 
   if (clicked) {
-    selectedFlag = selectedFlag && selectedFlag.id === clicked.id ? null : clicked;
-    cleanTagFiltersForSelectedFlag();
-    tagMenuScroll = 0;
+    selectFlag(clicked);
     requestDraw();
   }
 });
