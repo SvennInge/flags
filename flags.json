@@ -1657,8 +1657,8 @@
     "name": "Micronesia",
     "image": "images/Flag_of_Federated_States_of_Micronesia-256x135.png",
     "colors": {
-      "main": ["blue", "white"],
-      "secondary": []
+      "main": ["blue"],
+      "secondary": ["white"]
     },
     "layout": [
       "solid-field"

@@ -27,7 +27,6 @@ const tagFilters = {
 
 const NODE_RADIUS = 25;
 const SELECTED_RADIUS = 28;
-const LINK_MIN_DISTANCE = 0;
 const GLOBAL_MIN_NODE_DISTANCE = NODE_RADIUS * 2 + 20;
 const LABEL_PADDING = 6;
 
@@ -109,105 +108,52 @@ function getAllColors(flag) {
 }
 
 function colorsFullyMatch(a, b) {
-  const aMain = getMainColors(a);
-  const bMain = getMainColors(b);
-  const aSecondary = getSecondaryColors(a);
-  const bSecondary = getSecondaryColors(b);
+  const aColors = getAllColors(a);
+  const bColors = getAllColors(b);
 
-  if (aMain.length === 0 || bMain.length === 0) return false;
+  if (aColors.length === 0 || bColors.length === 0) return false;
 
-  return sameColorSet(aMain, bMain) && sameColorSet(aSecondary, bSecondary);
+  return sameColorSet(aColors, bColors);
 }
 
 function colorsSubsetMatch(a, b) {
+  if (colorsFullyMatch(a, b)) return true;
+
   const aMain = getMainColors(a);
   const bMain = getMainColors(b);
+  const aColors = getAllColors(a);
+  const bColors = getAllColors(b);
 
   if (aMain.length === 0 || bMain.length === 0) return false;
+  if (aColors.length === 0 || bColors.length === 0) return false;
 
-  // With no selected flag, use the same rule as the default color relation.
-  if (!selectedFlag) {
-    return colorsCompatible(a, b);
-  }
+  const mainClose = setsDifferByAtMostOneExtra(aMain, bMain);
+  const fullClose = setsDifferByAtMostOneExtra(aColors, bColors);
 
-  const selectedColors = getMainColors(selectedFlag);
-  const other = a.id === selectedFlag.id ? b : a;
-  const otherColors = getMainColors(other);
-
-  if (selectedColors.length === 0 || otherColors.length === 0) return false;
-
-  // For selected flag mode:
-  // - two-main-color selected flags require exact main-color match
-  // - multi-main-color selected flags allow exact match or the other flag having exactly one extra main color
-  if (selectedColors.length <= 2) {
-    return sameColorSet(selectedColors, otherColors);
-  }
-
-  const exact = sameColorSet(selectedColors, otherColors);
-  const oneExtra =
-    otherColors.length === selectedColors.length + 1 &&
-    selectedColors.every(color => otherColors.includes(color));
-
-  return exact || oneExtra;
+  return mainClose && fullClose;
 }
+
+function setsDifferByAtMostOneExtra(aColors, bColors) {
+  if (sameColorSet(aColors, bColors)) return true;
+
+  const smaller = aColors.length < bColors.length ? aColors : bColors;
+  const larger = aColors.length < bColors.length ? bColors : aColors;
+
+  if (smaller.length + 1 !== larger.length) return false;
+  return smaller.every(color => larger.includes(color));
+}
+
 
 function sameColorSet(aColors, bColors) {
   if (aColors.length !== bColors.length) return false;
   return aColors.every(color => bColors.includes(color));
 }
 
-function colorsCompatible(a, b) {
-  const aMain = getMainColors(a);
-  const bMain = getMainColors(b);
-
-  if (aMain.length === 0 || bMain.length === 0) return false;
-
-  // Two-main-color flags only link exact same main-color matches.
-  if (aMain.length <= 2 || bMain.length <= 2) {
-    return sameColorSet(aMain, bMain);
-  }
-
-  // Multi-main-color flags link exact matches or one extra/missing main color.
-  if (sameColorSet(aMain, bMain)) return true;
-
-  const lengthDiff = Math.abs(aMain.length - bMain.length);
-  if (lengthDiff !== 1) return false;
-
-  const smaller = aMain.length < bMain.length ? aMain : bMain;
-  const larger = aMain.length < bMain.length ? bMain : aMain;
-
-  return smaller.every(color => larger.includes(color));
-}
-
-function colorSimilarityRatio(a, b) {
-  const aMain = getMainColors(a);
-  const bMain = getMainColors(b);
-
-  if (aMain.length === 0 || bMain.length === 0) return 0;
-
-  const sharedMain = aMain.filter(color => bMain.includes(color)).length;
-  const mainUnion = new Set([...aMain, ...bMain]).size;
-  const mainRatio = sharedMain / mainUnion;
-
-  const aSecondary = getSecondaryColors(a);
-  const bSecondary = getSecondaryColors(b);
-  const sharedSecondary = aSecondary.filter(color => bSecondary.includes(color)).length;
-  const secondaryUnion = new Set([...aSecondary, ...bSecondary]).size;
-  const secondaryRatio = secondaryUnion > 0 ? sharedSecondary / secondaryUnion : 0;
-
-  // Main colors dominate; secondary colors only slightly strengthen a line.
-  return mainRatio * 0.85 + secondaryRatio * 0.15;
-}
-
-function meaningfulColorOverlap(a, b) {
-  return colorsCompatible(a, b);
-}
 
 function relationMatches(a, b) {
   return {
     colors: colorsFullyMatch(a, b),
     commonColors: colorsSubsetMatch(a, b),
-    colorOverlap: meaningfulColorOverlap(a, b),
     layout: sharedCount(a, b, "layout") > 0,
     symbols: sharedCount(a, b, "symbols") > 0,
   };
@@ -236,7 +182,7 @@ function passesRelationFilters(a, b) {
   const matches = relationMatches(a, b);
 
   if (active.length === 0) {
-    return matches.colorOverlap || matches.layout || matches.symbols;
+    return matches.commonColors || matches.layout || matches.symbols;
   }
 
   let colorMatch = true;
@@ -265,15 +211,16 @@ function similarity(a, b) {
   const matches = relationMatches(a, b);
   let score = 0;
 
+  // Make exact color matches the dominant driver
   if (matches.colors) {
-    score += 6;
+    score += 30; // very strong
   } else if (matches.commonColors) {
-    score += 4;
-  } else if (matches.colorOverlap) {
-    score += colorSimilarityRatio(a, b) * 5;
+    score += 12; // moderate
   }
-  if (matches.layout) score += sharedCount(a, b, "layout") * 3;
-  if (matches.symbols) score += sharedCount(a, b, "symbols") * 2;
+
+  // Keep other signals weaker so they don't override color grouping
+  if (matches.layout) score += sharedCount(a, b, "layout") * 1.5;
+  if (matches.symbols) score += sharedCount(a, b, "symbols") * 1;
 
   return score;
 }
@@ -311,7 +258,7 @@ function arrangeBySimilarity() {
 
   // Keep only stronger relations for the attraction force. Weak relations still
   // draw as lines, but they no longer distort the whole layout as much.
-  const attractionPairs = pairs.filter(pair => pair.score >= 6);
+  const attractionPairs = pairs.filter(pair => pair.score >= 12);
 
   for (let step = 0; step < 360; step++) {
     attractionPairs.forEach(pair => {
@@ -324,8 +271,8 @@ function arrangeBySimilarity() {
       let dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
       // High similarity should sit close, but never closer than the global node spacing.
-      const desiredDistance = Math.max(GLOBAL_MIN_NODE_DISTANCE + 12, 230 - score * 14);
-      const force = (dist - desiredDistance) * 0.012;
+      const desiredDistance = Math.max(GLOBAL_MIN_NODE_DISTANCE + 6, 190 - score * 6);
+      const force = (dist - desiredDistance) * 0.018;
 
       const fx = (dx / dist) * force;
       const fy = (dy / dist) * force;
@@ -477,7 +424,17 @@ function drawLines() {
           ? `rgba(0, 200, 255, ${Math.min(score / 10, 0.9)})`
           : "rgba(80, 80, 80, 0.08)";
 
-        ctx.lineWidth = connectedToSelected ? Math.max(1, score / 2) : 1;
+        let lineWidth = 1;
+
+        if (connectedToSelected) {
+          if (relationMatches(a, b).colors) {
+            lineWidth = 3; // exact matches more visible
+          } else if (relationMatches(a, b).commonColors) {
+            lineWidth = 1; // almost matches thin
+          }
+        }
+
+        ctx.lineWidth = lineWidth;
         ctx.stroke();
       }
     }
